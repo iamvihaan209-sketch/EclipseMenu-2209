@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     name: Build for macOS Intel
-    runs-on: macos-13
+    runs-on: macos-26-intel
 
     steps:
       - name: Checkout Repository
