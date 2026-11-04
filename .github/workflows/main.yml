@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     name: Build for macOS Intel
-    runs-on: macos-15-intel
+    runs-on: macos-26-intel
 
     steps:
       - name: Checkout Repository
@@ -22,10 +22,12 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Geode CLI via Homebrew
+      - name: Install Geode CLI Directly
         run: |
-          brew tap geode-sdk/geode
-          brew install geode-cli
+          # Download the latest macOS release binary of Geode CLI directly from GitHub
+          curl -L https://github.com/geode-sdk/cli/releases/latest/download/geode-macos -o geode
+          chmod +x geode
+          sudo mv geode /usr/local/bin/geode
 
       - name: Build Mod Package
         run: |
