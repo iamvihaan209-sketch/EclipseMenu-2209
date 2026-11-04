@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     name: Build for macOS Intel
-    runs-on: macos-26-intel
+    runs-on: macos-13
 
     steps:
       - name: Checkout Repository
@@ -22,15 +22,15 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Geode CLI Directly
+      - name: Install Geode CLI
         run: |
-          # Download the latest macOS release binary of Geode CLI directly from GitHub
-          curl -L https://github.com/geode-sdk/cli/releases/latest/download/geode-macos -o geode
-          chmod +x geode
-          sudo mv geode /usr/local/bin/geode
+          bash -c "$(curl -fsSL https://raw.githubusercontent.com/geode-sdk/cli/main/install.sh)"
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Build Mod Package
         run: |
+          # Add .local/bin to PATH for this step just in case
+          export PATH="$HOME/.local/bin:$PATH"
           geode build --platform MacOS --config RelWithDebInfo
 
       - name: Upload Artifact
