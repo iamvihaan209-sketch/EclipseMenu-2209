@@ -22,8 +22,10 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup Geode CLI
-        uses: geode-sdk/install-geode-cli@v1
+      - name: Install Geode CLI via Homebrew
+        run: |
+          brew tap geode-sdk/geode
+          brew install geode-cli
 
       - name: Build Mod Package
         run: |
