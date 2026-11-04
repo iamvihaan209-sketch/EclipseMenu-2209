@@ -2,6 +2,7 @@
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/UILayer.hpp>
 #include <Geode/modify/CCScheduler.hpp>
+#include <Geode/binding/CCKeyboardDispatcher.hpp>
 
 #include <modules/config/config.hpp>
 #include <modules/hack/hack.hpp>
@@ -16,7 +17,7 @@ using namespace eclipse;
 
 static bool s_isInitialized = false;
 
-static void toggleMenu(bool down = true) {
+static void toggleMenu() {
     gui::Engine::get()->toggle();
     config::save();
     gui::ThemeManager::get()->saveTheme();
@@ -25,17 +26,6 @@ static void toggleMenu(bool down = true) {
 class $modify(EclipseButtonMLHook, MenuLayer) {
     bool init() override {
         if (!MenuLayer::init()) return false;
-
-        // {
-        //     auto menu = this->getChildByID("bottom-menu");
-        //     auto rendererSwitchButton = CCMenuItemSpriteExtra::create(
-        //         cocos2d::CCSprite::createWithSpriteFrameName("GJ_editModeBtn_001.png"),
-        //         this, menu_selector(EclipseButtonMLHook::onToggleRenderer)
-        //     );
-        //     rendererSwitchButton->setID("render-switch"_spr);
-        //     menu->addChild(rendererSwitchButton);
-        //     menu->updateLayout();
-        // }
 
         if (s_isInitialized) return true;
 
@@ -50,11 +40,15 @@ class $modify(EclipseButtonMLHook, MenuLayer) {
         gui::FloatingButton::get()->setCallback([]{ toggleMenu(); });
         #endif
 
-        // Register the keybind
-        auto& key = keybinds::Manager::get()->registerKeybind("menu.toggle", "Toggle UI", toggleMenu);
-        config::setIfEmpty("menu.toggleKey", keybinds::Keys::Tab);
-        key.setKey(config::get<keybinds::Keys>("menu.toggleKey", keybinds::Keys::Tab));
-        key.setInitialized(true);
+        // Register the keybind using Geode v6 event filters
+        new EventListener<KeybindFilter>([=](KeybindEvent* event) {
+            if (event->isDown()) {
+                toggleMenu();
+            }
+            return ListenerResult::Propagate;
+        }, KeybindFilter("menu.toggle"));
+
+        config::setIfEmpty("menu.toggleKey", "tab");
         hack::Hack::lateInitializeHacks();
 
         s_isInitialized = true;
