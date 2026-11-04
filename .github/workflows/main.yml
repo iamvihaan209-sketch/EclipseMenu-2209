@@ -1,0 +1,56 @@
+name: Build Geode Mod
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    name: Build for ${{ matrix.platform.name }}
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - name: macOS
+            os: macos-latest
+            target: MacOS
+          - name: Windows
+            os: windows-latest
+            target: Win32
+          - name: Android 32-bit
+            os: ubuntu-latest
+            target: Android32
+          - name: Android 64-bit
+            os: ubuntu-latest
+            target: Android64
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Setup Geode CLI on the runner
+      - name: Setup Geode CLI
+        uses: geode-sdk/install-geode-cli@v1
+
+      # Configure and build the mod using the Geode CLI
+      - name: Build Mod Package
+        run: |
+          geode package new --name "EclipseMenu" --id "eclipse.eclipse-menu" --developer "Vihaan" --no-input || true
+          geode build --platform ${{ matrix.platform.target }} --config RelWithDebInfo
+
+      # Upload the built .geode artifact so you can download it directly from GitHub
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eclipse-menu-${{ matrix.platform.target }}
+          path: build/*.geode
