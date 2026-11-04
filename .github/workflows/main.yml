@@ -1,4 +1,4 @@
-name: Build Geode Mod
+name: Build macOS Intel Geode Mod
 
 on:
   workflow_dispatch:
@@ -13,24 +13,8 @@ on:
 
 jobs:
   build:
-    name: Build for ${{ matrix.platform.name }}
-    runs-on: ${{ matrix.platform.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - name: macOS
-            os: macos-latest
-            target: MacOS
-          - name: Windows
-            os: windows-latest
-            target: Win32
-          - name: Android 32-bit
-            os: ubuntu-latest
-            target: Android32
-          - name: Android 64-bit
-            os: ubuntu-latest
-            target: Android64
+    name: Build for macOS Intel
+    runs-on: macos-15-intel
 
     steps:
       - name: Checkout Repository
@@ -38,19 +22,15 @@ jobs:
         with:
           submodules: recursive
 
-      # Setup Geode CLI on the runner
       - name: Setup Geode CLI
         uses: geode-sdk/install-geode-cli@v1
 
-      # Configure and build the mod using the Geode CLI
       - name: Build Mod Package
         run: |
-          geode package new --name "EclipseMenu" --id "eclipse.eclipse-menu" --developer "Vihaan" --no-input || true
-          geode build --platform ${{ matrix.platform.target }} --config RelWithDebInfo
+          geode build --platform MacOS --config RelWithDebInfo
 
-      # Upload the built .geode artifact so you can download it directly from GitHub
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: eclipse-menu-${{ matrix.platform.target }}
+          name: eclipse-menu-macos-intel
           path: build/*.geode
