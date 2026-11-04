@@ -26,9 +26,9 @@ namespace eclipse::hacks::Global {
     class $modify(NoShortNumbersGTHook, GameToolbox) {
         ALL_DELEGATES_AND_SAFE_PRIO("global.noshortnumbers")
 
-        static gd::string intToShortString(int value) {
+        static std::string intToShortString(int value) {
             bool thousands = config::get<bool>("global.noshortnumbers.thousands", false);
-            gd::string str = thousands ? fmt::format("{}", fmt::group_digits(value))
+            std::string str = thousands ? fmt::format("{}", fmt::group_digits(value))
                                        : fmt::format("{}", value);
             return str;
         }

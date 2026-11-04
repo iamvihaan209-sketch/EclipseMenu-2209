@@ -1,50 +1,40 @@
-cmake_minimum_required(VERSION 3.21)
-add_library(third_party INTERFACE)
+# Automatically download CPM.cmake if it doesn't exist yet
+set(CPM_DOWNLOAD_VERSION 0.42.1)
+set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
 
-# Include libraries
-add_library(imgui INTERFACE)
-CPMAddPackage("gh:EclipseMenu/imgui#dac32cb")
-target_include_directories(imgui INTERFACE ${imgui_SOURCE_DIR})
-target_sources(imgui INTERFACE
-    ${imgui_SOURCE_DIR}/imgui.cpp
-    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
-    ${imgui_SOURCE_DIR}/imgui_tables.cpp
-    ${imgui_SOURCE_DIR}/imgui_draw.cpp
-    ${imgui_SOURCE_DIR}/imgui_demo.cpp
-    ${imgui_SOURCE_DIR}/misc/cpp/imgui_stdlib.cpp
-)
-set(HAS_IMGUI ON)
-
-if (NOT ANDROID)
-    set(RAPIDJSONTEST OFF)
-    CPMAddPackage("gh:EclipseMenu/discord-rpc#1259d3a")
+if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
+    message(STATUS "Downloading CPM.cmake v${CPM_DOWNLOAD_VERSION}...")
+    file(DOWNLOAD
+        https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
+        ${CPM_DOWNLOAD_LOCATION}
+    )
 endif()
-CPMAddPackage("gh:matcool/gd-imgui-cocos#fbd4103")
-CPMAddPackage("gh:maxnut/GDReplayFormat#4950cc2")
-CPMAddPackage("gh:EclipseMenu/rift#e065e9a")
-CPMAddPackage("gh:SpaghettDev/subprocess#e12740b")
+
+include(${CPM_DOWNLOAD_LOCATION})
+
 CPMAddPackage(
-    NAME nlohmann_json
-    GITHUB_REPOSITORY nlohmann/json
-    VERSION 3.11.3
+    NAME imgui
+    GITHUB_REPOSITORY ocornut/imgui
+    GIT_TAG docking
+    GIT_SHALLOW TRUE
+    DOWNLOAD_ONLY TRUE
 )
 
-# Fix debug build
-if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND WIN32)
-    target_compile_definitions(discord-rpc PRIVATE _ITERATOR_DEBUG_LEVEL=0)
-    target_compile_definitions(rift PRIVATE _HAS_ITERATOR_DEBUGGING=0)
+if(imgui_ADDED AND NOT TARGET imgui)
+    add_library(imgui STATIC
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${imgui_SOURCE_DIR}/imgui_demo.cpp
+    )
+    target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR})
+    target_compile_definitions(imgui PUBLIC IMGUI_DEFINE_MATH_OPERATORS)
 endif()
 
-# Link them to the project
-target_link_libraries(third_party INTERFACE
-    libGDR
-    subprocess
-    imgui
-    imgui-cocos
-    nlohmann_json::nlohmann_json
-    rift
-)
-
-if (NOT ANDROID)
-    target_link_libraries(third_party INTERFACE discord-rpc)
+if (NOT TARGET imgui)
+    message(FATAL_ERROR "Failed to add ImGui dependency!")
 endif()
+
+add_library(third_party INTERFACE)
+target_link_libraries(third_party INTERFACE imgui)

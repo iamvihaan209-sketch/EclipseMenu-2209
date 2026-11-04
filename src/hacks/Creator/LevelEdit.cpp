@@ -77,7 +77,7 @@ namespace eclipse::hacks::Creator {
     class $modify(LevelEditLTHook, LevelTools) {
         ENABLE_SAFE_HOOKS_ALL()
 
-        static bool verifyLevelIntegrity(gd::string levelString, int levelID) {
+        static bool verifyLevelIntegrity(std::string levelString, int levelID) {
             if (LevelTools::verifyLevelIntegrity(std::move(levelString), levelID))
                 return true;
 

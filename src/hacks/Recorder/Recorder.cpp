@@ -10,7 +10,7 @@
 
 #include <regex>
 
-// android uses custom gd::string class
+// android uses custom std::string class
 #ifdef GEODE_IS_ANDROID
 #define STR(x) std::string(x)
 #else

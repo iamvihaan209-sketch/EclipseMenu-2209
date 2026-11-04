@@ -19,13 +19,13 @@ namespace eclipse::hacks::Level {
 
         if (!gjbgl) return;
 
-        for (const auto& [name, array] : geode::cocos::CCDictionaryExt<gd::string, cocos2d::CCArray*>{ gjbgl->m_particlesDict }) {
+        for (const auto& [name, array] : geode::cocos::CCDictionaryExt<std::string, cocos2d::CCArray*>{ gjbgl->m_particlesDict }) {
             for (const auto& particle : geode::cocos::CCArrayExt<cocos2d::CCParticleSystemQuad*>{ array }) {
                 particle->setVisible(miscParticlesEnabled);
             }
         }
 
-        for (const auto& [name, array] : geode::cocos::CCDictionaryExt<gd::string, cocos2d::CCArray*>{ gjbgl->m_claimedParticles }) {
+        for (const auto& [name, array] : geode::cocos::CCDictionaryExt<std::string, cocos2d::CCArray*>{ gjbgl->m_claimedParticles }) {
             for (const auto& particle : geode::cocos::CCArrayExt<cocos2d::CCParticleSystemQuad*>{ array }) {
                 particle->setVisible(customParticlesEnabled);
             }
@@ -35,7 +35,7 @@ namespace eclipse::hacks::Level {
             particle->setVisible(customParticlesEnabled);
         }
 
-        for (const auto& [name, array] : geode::cocos::CCDictionaryExt<gd::string, cocos2d::CCArray*>{ gjbgl->m_customParticles }) {
+        for (const auto& [name, array] : geode::cocos::CCDictionaryExt<std::string, cocos2d::CCArray*>{ gjbgl->m_customParticles }) {
             for (const auto& particle : geode::cocos::CCArrayExt<cocos2d::CCParticleSystemQuad*>{ array }) {
                 particle->setVisible(customParticlesEnabled);
             }

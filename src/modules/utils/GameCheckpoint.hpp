@@ -763,7 +763,7 @@ namespace eclipse::utils {
         bool m_fixRobotJump;
         // gd::map<int, bool> m_holdingButtons;
         bool m_inputsLocked;
-        gd::string m_currentRobotAnimation;
+        std::string m_currentRobotAnimation;
         bool m_gv0123;
         int m_iconRequestID;
         int m_unkUnused;

@@ -24,7 +24,7 @@ namespace eclipse::hacks::Bypass {
     class $modify(CharacterFilterCCTINHook, CCTextInputNode) {
         ADD_HOOKS_DELEGATE("bypass.charfilter")
 
-        void updateLabel(gd::string str) {
+        void updateLabel(std::string str) {
             this->setAllowedChars(
                 "abcdefghijklmnopqrstuvwxyz"
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
