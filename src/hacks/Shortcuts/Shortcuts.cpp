@@ -1,13 +1,12 @@
 #include <modules/gui/gui.hpp>
-#include <asp/fs/std.hpp>
+#include <Geode/utils/async.hpp>
+#include <Geode/utils/file.hpp>
 #include <modules/hack/hack.hpp>
 #include <modules/config/config.hpp>
 
 namespace eclipse::hacks::Shortcuts {
 
     class Shortcuts : public hack::Hack {
-        using FileEvent = geode::Task<geode::Result<std::filesystem::path>>;
-
         static void openSettings() {
             if (auto* options = OptionsLayer::create()) {
                 auto scene = cocos2d::CCScene::get();
@@ -66,8 +65,6 @@ namespace eclipse::hacks::Shortcuts {
                     level->m_normalPercent = 0;
                     level->m_newNormalPercent2 = 0;
                     level->m_orbCompletion = 0;
-                    level->m_54 = 0;
-                    level->m_k111 = 0;
                     level->m_bestPoints = 0;
                     level->m_bestTime = 0;
 
@@ -116,43 +113,40 @@ namespace eclipse::hacks::Shortcuts {
 
 #ifdef GEODE_IS_WINDOWS
         static void injectDll() {
-            static geode::EventListener<FileEvent> m_listener;
-            geode::utils::file::FilePickOptions::Filter filter;
-            filter.description = "Dynamic Link Library (*.dll)";
-            filter.files.insert("*.dll");
+            geode::utils::file::FilePickOptions options;
+            options.filters.push_back({ "Dynamic Link Library (*.dll)", { "*.dll" } });
+            options.defaultPath = geode::dirs::getGameDir();
 
-            m_listener.bind([](FileEvent::Event* event) {
-                if (auto value = event->getValue()) {
-                    auto path = value->unwrapOr("");
-                    if (path.empty() || !std::filesystem::exists(path))
-                        return;
+            geode::async::spawn(geode::utils::file::pick(geode::utils::file::PickMode::OpenFile, options), [](geode::utils::file::PickResult result) {
+                if (result.isErr()) return;
+                auto picked = result.unwrap();
+                if (!picked) return;
 
-                    geode::log::warn("Injecting DLL: {}", path);
-                    HMODULE module = LoadLibraryA(path.string().c_str());
-                    if (!module) return geode::log::error("Failed to inject DLL: {}", path);
+                auto path = picked->string();
+                if (path.empty() || !std::filesystem::exists(path))
+                    return;
 
-                    // Call DLLMain with DLL_PROCESS_ATTACH
-                    bool success = module > (HMODULE) HINSTANCE_ERROR;
-                    if (success) {
-                        using DllMain = BOOL(WINAPI*)(HINSTANCE, DWORD, LPVOID);
-                        auto dllMain = reinterpret_cast<DllMain>(GetProcAddress(module, "DllMain"));
-                        if (dllMain)
-                            dllMain(static_cast<HINSTANCE>(module), DLL_PROCESS_ATTACH, nullptr);
-                    } else {
-                        FreeLibrary(module);
-                        geode::log::error("Failed to inject DLL: {}", path);
-                    }
+                geode::log::warn("Injecting DLL: {}", path);
+                HMODULE module = LoadLibraryA(path.c_str());
+                if (!module) return geode::log::error("Failed to inject DLL: {}", path);
+
+                // Call DLLMain with DLL_PROCESS_ATTACH
+                bool success = module > (HMODULE) HINSTANCE_ERROR;
+                if (success) {
+                    using DllMain = BOOL(WINAPI*)(HINSTANCE, DWORD, LPVOID);
+                    auto dllMain = reinterpret_cast<DllMain>(GetProcAddress(module, "DllMain"));
+                    if (dllMain)
+                        dllMain(static_cast<HINSTANCE>(module), DLL_PROCESS_ATTACH, nullptr);
+                } else {
+                    FreeLibrary(module);
+                    geode::log::error("Failed to inject DLL: {}", path);
                 }
             });
-            m_listener.setFilter(geode::utils::file::pick(
-                geode::utils::file::PickMode::OpenFile,
-                { geode::dirs::getGameDir(), { filter }}
-            ));
         }
 #endif
 
         static void openSaveFolder() {
-            auto path = geode::dirs::getSaveDir().toStdPath().unwrap();
+            auto path = geode::dirs::getSaveDir();
             geode::utils::file::openFolder(path);
         }
 

@@ -43,7 +43,7 @@ namespace eclipse::hacks::Recorder {
             if(result)
                 return;
 
-            geode::utils::file::openFolder(geode::Mod::get()->getSaveDir().toStdPath().unwrap() / "renders");
+            geode::utils::file::openFolder(geode::Mod::get()->getSaveDir() / "renders");
         });
     }
 

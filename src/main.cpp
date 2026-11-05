@@ -2,7 +2,6 @@
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/UILayer.hpp>
 #include <Geode/modify/CCScheduler.hpp>
-#include <Geode/binding/CCKeyboardDispatcher.hpp>
 
 #include <modules/config/config.hpp>
 #include <modules/hack/hack.hpp>
