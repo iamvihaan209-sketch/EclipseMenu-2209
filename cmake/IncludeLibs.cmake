@@ -36,5 +36,12 @@ if (NOT TARGET imgui)
     message(FATAL_ERROR "Failed to add ImGui dependency!")
 endif()
 
+# nlohmann/json: Geode v6 no longer re-exports it, so it is added directly
+CPMAddPackage(
+    NAME nlohmann_json
+    GITHUB_REPOSITORY nlohmann/json
+    VERSION 3.11.3
+)
+
 add_library(third_party INTERFACE)
-target_link_libraries(third_party INTERFACE imgui)
+target_link_libraries(third_party INTERFACE imgui nlohmann_json::nlohmann_json)
