@@ -156,8 +156,8 @@ namespace eclipse::hacks::Player {
     };
 
     class $modify(NoClipGJBGLHook, GJBaseGameLayer) {
-        void processCommands(float dt) {
-            GJBaseGameLayer::processCommands(dt);
+        void processCommands(float dt, bool isHalfTick, bool isLastTick) {
+            GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
 
             if (!PlayLayer::get()) {
                 config::setTemp<int>("noclipDeaths", 0);

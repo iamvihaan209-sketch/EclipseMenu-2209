@@ -39,8 +39,8 @@ namespace eclipse::hacks::Player {
 
         ADD_HOOKS_DELEGATE("player.autoclick")
 
-        void processCommands(float dt) {
-            GJBaseGameLayer::processCommands(dt);
+        void processCommands(float dt, bool isHalfTick, bool isLastTick) {
+            GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
 
             auto clickInterval = config::get<int>("player.autoclick.intervalhold", 1);
             auto releaseInterval = config::get<int>("player.autoclick.intervalrelease", 1);
