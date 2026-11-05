@@ -5,7 +5,6 @@
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/LevelEditorLayer.hpp>
 #include <Geode/modify/PlayLayer.hpp>
-#include <modules/labels/variables.hpp>
 
 #ifndef GEODE_IS_MACOS
 constexpr float MIN_TPS = 0.f;

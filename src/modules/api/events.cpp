@@ -1,7 +1,6 @@
 #include <eclipse.hpp>
 #include <modules/gui/gui.hpp>
 #include <modules/config/config.hpp>
-#include <modules/labels/variables.hpp>
 
 namespace eclipse::api {
 using namespace geode::prelude;
@@ -24,48 +23,6 @@ void createSetConfigListener() {
             config::set<T>(e->getKey(), e->getValue());
         } else {
             config::setTemp<T>(e->getKey(), e->getValue());
-        }
-        return ListenerResult::Stop;
-    });
-}
-
-template <label::SupportedType T>
-void createGetRiftVariableListener() {
-    new EventListener<EventFilter<events::GetRiftVariableEvent<T>>>(+[](events::GetRiftVariableEvent<T>* e) {
-        auto val = labels::VariableManager::get().getVariable(std::string(e->getName()));
-
-#define HANDLE_CASE(type) \
-    if (val.is##type()) { e->setResult(Ok(val.get##type())); }\
-    else { e->setResult(Err("Value is not a " #type)); }
-
-        if constexpr (std::same_as<T, std::string>) {
-            HANDLE_CASE(String)
-        } else if constexpr (std::same_as<T, bool>) {
-            HANDLE_CASE(Boolean)
-        } else if constexpr (std::same_as<T, int64_t>) {
-            HANDLE_CASE(Integer)
-        } else if constexpr (std::same_as<T, double>) {
-            HANDLE_CASE(Float)
-        } else if constexpr (std::same_as<T, label::null_t>) {
-            if (val.isNull()) e->setResult(Ok(std::monostate{}));
-            else e->setResult(Err("Value is not null"));
-        } else {
-            e->setResult(Err("Unsupported type"));
-        }
-
-#undef HANDLE_CASE
-
-        return ListenerResult::Stop;
-    });
-}
-
-template <label::SupportedType T>
-void createSetRiftVariableListener() {
-    new EventListener<EventFilter<events::SetRiftVariableEvent<T>>>(+[](events::SetRiftVariableEvent<T>* e) {
-        if constexpr (std::same_as<T, label::null_t>) {
-            labels::VariableManager::get().removeVariable(std::string(e->getName()));
-        } else {
-            labels::VariableManager::get().setVariable(std::string(e->getName()), rift::Value::from<T>(e->getValue()));
         }
         return ListenerResult::Stop;
     });
@@ -121,21 +78,6 @@ $execute {
     createSetConfigListener<float>();
     createSetConfigListener<std::string>();
 
-    /* RIFT */
-    new EventListener<EventFilter<events::FormatRiftStringEvent>>(+[](events::FormatRiftStringEvent* e) {
-        e->setResult(rift::format(e->getSource(), labels::VariableManager::get().getVariables()));
-        return ListenerResult::Stop;
-    });
-    createGetRiftVariableListener<std::string>();
-    createGetRiftVariableListener<bool>();
-    createGetRiftVariableListener<int64_t>();
-    createGetRiftVariableListener<double>();
-    createGetRiftVariableListener<label::null_t>();
-    createSetRiftVariableListener<std::string>();
-    createSetRiftVariableListener<bool>();
-    createSetRiftVariableListener<int64_t>();
-    createSetRiftVariableListener<double>();
-    createSetRiftVariableListener<label::null_t>();
 }
 
 }

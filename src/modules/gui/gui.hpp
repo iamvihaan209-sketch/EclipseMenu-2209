@@ -1,7 +1,6 @@
 #pragma once
 
 #include <modules/keybinds/manager.hpp>
-#include <modules/labels/setting.hpp>
 #include <modules/gui/color.hpp>
 
 #include <utility>
@@ -21,7 +20,7 @@ namespace eclipse::gui {
         Label, Toggle, RadioButton,
         Combo, Slider, InputFloat, InputInt,
         FloatToggle, InputText, Color,
-        Button, Keybind, LabelSettings, FilesystemCombo, IntToggle
+        Button, Keybind, FilesystemCombo, IntToggle
     };
 
     class Component {
@@ -741,60 +740,6 @@ namespace eclipse::gui {
         std::function<void(keybinds::Keys)> m_callback;
     };
 
-    /// @brief Component that allows to change label settings.
-    class LabelSettingsComponent : public Component {
-    public:
-        explicit LabelSettingsComponent(labels::LabelSettings* settings)
-            : m_settings(settings) {
-            m_type = ComponentType::LabelSettings;
-            m_id = fmt::format("label-{}", m_settings->id);
-        }
-
-        void onInit() override {}
-        void onUpdate() override {}
-
-        [[nodiscard]] const std::string& getId() const override { return m_id; }
-        [[nodiscard]] const std::string& getTitle() const override { return m_settings->text; }
-
-        labels::LabelSettings* getSettings() const { return m_settings; }
-
-        LabelSettingsComponent* deleteCallback(const std::function<void()>& func) {
-            m_deleteCallback = func;
-            return this;
-        }
-
-        LabelSettingsComponent* editCallback(const std::function<void()>& func) {
-            m_editCallback = func;
-            return this;
-        }
-
-        LabelSettingsComponent* moveCallback(const std::function<void(bool)>& func) {
-            m_moveCallback = func;
-            return this;
-        }
-
-        void triggerDeleteCallback() const;
-
-        void triggerEditCallback() const;
-
-        void triggerMoveCallback(bool up) const {
-            if (m_moveCallback) m_moveCallback(up);
-        }
-
-        /// @brief Allows to set keybinds for the label.
-        LabelSettingsComponent* handleKeybinds();
-
-        [[nodiscard]] bool hasKeybind() const { return m_hasKeybind; }
-
-    private:
-        std::string m_id;
-        labels::LabelSettings* m_settings;
-        std::function<void()> m_deleteCallback;
-        std::function<void()> m_editCallback;
-        std::function<void(bool)> m_moveCallback;
-        bool m_hasKeybind = false;
-    };
-
     /// @brief Contains a list of components and a title, to be passed into render engine.
     class MenuTab {
     public:
@@ -903,13 +848,6 @@ namespace eclipse::gui {
             auto keybind = std::make_shared<KeybindComponent>(title, id, canDelete);
             addComponent(keybind);
             return keybind;
-        }
-
-        /// @brief Add a label settings to the tab.
-        std::shared_ptr<LabelSettingsComponent> addLabelSetting(labels::LabelSettings* settings) {
-            auto labelSettings = std::make_shared<LabelSettingsComponent>(settings);
-            addComponent(labelSettings);
-            return labelSettings;
         }
 
         /// @brief Get the tab's title.

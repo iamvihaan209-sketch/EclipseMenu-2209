@@ -54,7 +54,7 @@ namespace eclipse::gui::imgui {
             CASE(InputInt); CASE(FloatToggle);
             CASE(InputText); CASE(Color);
             CASE(Button); CASE(Keybind);
-            CASE(LabelSettings); CASE(FilesystemCombo);
+            CASE(FilesystemCombo);
             CASE(IntToggle);
         }
         ImGui::PopID();
@@ -574,71 +574,6 @@ namespace eclipse::gui::imgui {
 
         ImGui::PopItemWidth();
         ImGui::PopID();
-    }
-
-    void Theme::visitLabelSettings(const std::shared_ptr<LabelSettingsComponent>& labelSettings) const {
-        auto* settings = labelSettings->getSettings();
-
-        if (this->checkboxWithSettings(settings->name, settings->visible, labelSettings->isSearchedFor(), [this, settings, labelSettings] {
-            auto& name = settings->name;
-            if (ImGui::InputText("Name", &name)) {
-                settings->name = name;
-                labelSettings->triggerEditCallback();
-            }
-
-            auto& text = settings->text;
-            if (ImGui::InputText("Text", &text)) {
-                settings->text = text;
-                labelSettings->triggerEditCallback();
-            }
-
-            int32_t currentFont = labels::getFontIndex(settings->font);
-            if (ImGui::Combo("Font", &currentFont, labels::fontNames.data(), labels::fontNames.size())) {
-                settings->font = labels::fontFiles[currentFont];
-                labelSettings->triggerEditCallback();
-            }
-
-            auto labelScale = settings->scale;
-            if (ImGui::InputFloat("Scale", &labelScale, 0.f, 0.f, "%.2f")) {
-                settings->scale = std::clamp(labelScale, 0.0f, 10.0f);
-                labelSettings->triggerEditCallback();
-            }
-
-            auto& color = settings->color;
-            if (ImGui::ColorEdit3("Color", color.data(), ImGuiColorEditFlags_NoInputs)) {
-                settings->color = color;
-                labelSettings->triggerEditCallback();
-            }
-
-            auto opacity = settings->color.a;
-            if (ImGui::SliderFloat("Opacity", &opacity, 0.0f, 1.0f)) {
-                settings->color.a = opacity;
-                labelSettings->triggerEditCallback();
-            }
-
-            auto alignment = settings->alignment;
-            if (ImGui::Combo("Alignment", reinterpret_cast<int*>(&alignment), labels::alignmentNames.data(), labels::alignmentNames.size())) {
-                settings->alignment = alignment;
-                labelSettings->triggerEditCallback();
-            }
-
-            if (this->button("Delete", false)) {
-                labelSettings->triggerDeleteCallback();
-                ImGui::CloseCurrentPopup();
-            }
-
-            if (this->button("Move Up", false)) {
-                labelSettings->triggerMoveCallback(true);
-            }
-            if (this->button("Move Down", false)) {
-                labelSettings->triggerMoveCallback(false);
-            }
-
-        }, [labelSettings, settings] {
-            if (labelSettings->hasKeybind())
-                handleKeybindMenu(fmt::format("label.{}", settings->id));
-        }, fmt::format("label-setting-{}", settings->id)))
-            labelSettings->triggerEditCallback();
     }
 
     bool Theme::checkbox(const std::string &label, bool &value, bool isSearchedFor, const std::function<void()> &postDraw) const {

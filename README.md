@@ -47,7 +47,6 @@
 ## Features
 - 90+ hacks
 - Startpos Switcher (with Smart Smartpos!)
-- Fully Customizable Labels
 - Show Trajectory
 - Internal Recorder
 - Replay Bot

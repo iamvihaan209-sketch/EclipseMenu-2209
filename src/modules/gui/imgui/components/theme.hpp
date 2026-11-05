@@ -21,7 +21,6 @@ namespace eclipse::gui {
     class ColorComponent;
     class ButtonComponent;
     class KeybindComponent;
-    class LabelSettingsComponent;
 }
 
 namespace eclipse::gui::imgui {
@@ -74,7 +73,6 @@ namespace eclipse::gui::imgui {
         virtual void visitColor(const std::shared_ptr<ColorComponent>& color) const;
         virtual void visitButton(const std::shared_ptr<ButtonComponent>& button) const;
         virtual void visitKeybind(const std::shared_ptr<KeybindComponent>& keybind) const;
-        virtual void visitLabelSettings(const std::shared_ptr<LabelSettingsComponent>& labelSettings) const;
 
         // == ImGui Widgets == //
 
