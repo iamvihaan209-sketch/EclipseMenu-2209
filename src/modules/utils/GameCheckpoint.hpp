@@ -1,4 +1,8 @@
 #include <modules/gui/gui.hpp>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <vector>
 #include <modules/hack/hack.hpp>
 #include <modules/config/config.hpp>
 
@@ -572,8 +576,8 @@ namespace eclipse::utils {
         int m_collidingWithSlopeId;
         bool m_slopeFlipGravityRelated;
         float m_slopeAngleRadians;
-        gd::unordered_map<int, GJPointDouble> m_rotateObjectsRelated;
-        gd::unordered_map<int, GameObject*> m_maybeRotatedObjectsMap;
+        std::unordered_map<int, GJPointDouble> m_rotateObjectsRelated;
+        std::unordered_map<int, GameObject*> m_maybeRotatedObjectsMap;
         float m_rotationSpeed;
         float m_rotateSpeed;
         bool m_isRotating;
@@ -613,7 +617,7 @@ namespace eclipse::utils {
         double m_accelerationOrSpeed;
         double m_snapDistance;
         bool m_ringJumpRelated;
-        gd::unordered_set<int> m_ringRelatedSet;
+        std::unordered_set<int> m_ringRelatedSet;
         GameObject* m_objectSnappedTo;
         CheckpointObject* m_pendingCheckpoint;
         int m_onFlyCheckpointTries;
@@ -697,7 +701,7 @@ namespace eclipse::utils {
         bool m_isLocked;
         bool m_controlsDisabled;
         cocos2d::CCPoint m_lastGroundedPos;
-        gd::unordered_set<int> m_touchedRings;
+        std::unordered_set<int> m_touchedRings;
         GameObject* m_lastActivatedPortal;
         bool m_hasEverJumped;
         bool m_ringOrStreakRelated;
@@ -714,7 +718,7 @@ namespace eclipse::utils {
         bool m_swapColors;
         bool m_gamevar0062;
         int m_followRelated;
-        gd::vector<float> m_playerFollowFloats;
+        std::vector<float> m_playerFollowFloats;
         float m_unk838;
         int m_stateOnGround;
         unsigned char m_stateUnk;
@@ -757,11 +761,11 @@ namespace eclipse::utils {
         int m_stateForce;
         cocos2d::CCPoint m_stateForceVector;
         bool m_affectedByForces;
-        gd::map<int, bool> m_jumpPadRelated;
+        std::map<int, bool> m_jumpPadRelated;
         float m_somethingPlayerSpeedTime;
         float m_playerSpeedAC;
         bool m_fixRobotJump;
-        // gd::map<int, bool> m_holdingButtons;
+        // std::map<int, bool> m_holdingButtons;
         bool m_inputsLocked;
         std::string m_currentRobotAnimation;
         bool m_gv0123;

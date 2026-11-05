@@ -1,4 +1,5 @@
 #include <modules/gui/gui.hpp>
+#include <vector>
 #include <modules/hack/hack.hpp>
 #include <modules/config/config.hpp>
 
@@ -290,7 +291,7 @@ namespace eclipse::hacks::Player {
     };
 
     class $modify(ShowTrajectoryEGOHook, EffectGameObject) {
-        void triggerObject(GJBaseGameLayer* p0, int p1, const gd::vector<int>* p2) {
+        void triggerObject(GJBaseGameLayer* p0, int p1, const std::vector<int>* p2) {
             if (s_simulation.isSimulating()) return;
             
             return EffectGameObject::triggerObject(p0, p1, p2);
@@ -348,9 +349,9 @@ namespace eclipse::hacks::Player {
         }
 
         //don't trigger objects early
-        void collisionCheckObjects(PlayerObject* player, gd::vector<GameObject*>* vec, int objectsCount, float dt) {
+        void collisionCheckObjects(PlayerObject* player, std::vector<GameObject*>* vec, int objectsCount, float dt) {
             if (s_simulation.isSimulating()) {
-                gd::vector<GameObject*> extra;
+                std::vector<GameObject*> extra;
 #ifndef GEODE_IS_ANDROID // vector::reserve is not available on Android
                 extra.reserve(objectsCount);
 #endif

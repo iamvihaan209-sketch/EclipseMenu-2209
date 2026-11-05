@@ -1,4 +1,5 @@
 #include <modules/gui/gui.hpp>
+#include <vector>
 #include <modules/hack/hack.hpp>
 #include <modules/config/config.hpp>
 
@@ -23,7 +24,7 @@ namespace eclipse::hacks::Level {
     class $modify(MuteLevelSFXEGOHook, EffectGameObject) {
         ADD_HOOKS_DELEGATE("level.mutelevelsfx")
 
-        void triggerObject(GJBaseGameLayer* gjbgl, int p1, gd::vector<int> const* p2) override {
+        void triggerObject(GJBaseGameLayer* gjbgl, int p1, std::vector<int> const* p2) override {
             if (!PlayLayer::get() || (this->m_objectID != 3602 && this->m_objectID != 3603))
                 return EffectGameObject::triggerObject(gjbgl, p1, p2);
         }

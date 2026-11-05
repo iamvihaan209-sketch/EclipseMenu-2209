@@ -1,4 +1,5 @@
 #include <modules/gui/gui.hpp>
+#include <vector>
 #include <modules/hack/hack.hpp>
 #include <modules/config/config.hpp>
 
@@ -21,7 +22,7 @@ namespace eclipse::hacks::Level {
     class $modify(PlatGamemodesBGLHook, GJBaseGameLayer) {
         ADD_HOOKS_DELEGATE("level.platgamemodes")
 
-        void collisionCheckObjects(PlayerObject* player, gd::vector<GameObject*>* sectionObjects, int objectCount, float dt) {
+        void collisionCheckObjects(PlayerObject* player, std::vector<GameObject*>* sectionObjects, int objectCount, float dt) {
             if (!m_isPlatformer)
                 return GJBaseGameLayer::collisionCheckObjects(player, sectionObjects, objectCount, dt);
 

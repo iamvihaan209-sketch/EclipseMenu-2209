@@ -1,4 +1,5 @@
 #include <modules/gui/gui.hpp>
+#include <vector>
 #include <modules/hack/hack.hpp>
 #include <modules/config/config.hpp>
 
@@ -24,7 +25,7 @@ namespace eclipse::hacks::Player {
     class $modify(NoHideTriggerEGOHook, EffectGameObject) {
         ALL_DELEGATES_AND_SAFE_PRIO("player.nohidetrigger")
 
-        void triggerObject(GJBaseGameLayer* bgl, int p1, gd::vector<int> const* p2) override {
+        void triggerObject(GJBaseGameLayer* bgl, int p1, std::vector<int> const* p2) override {
             switch (m_objectID) {
                 case 1612: // Hide Trigger
                 case 1613: // Show Trigger

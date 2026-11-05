@@ -1,4 +1,5 @@
 #include <modules/gui/gui.hpp>
+#include <vector>
 #include <modules/hack/hack.hpp>
 #include <modules/config/config.hpp>
 
@@ -92,7 +93,7 @@ namespace eclipse::hacks::Player {
         i am bringing his new hook. this hook disables music/sfx
         from spawn triggers.
         */
-        void triggerObject(GJBaseGameLayer* p0, int p1, gd::vector<int> const* p2) {
+        void triggerObject(GJBaseGameLayer* p0, int p1, std::vector<int> const* p2) {
             PlayLayer* pl = PlayLayer::get();
 
             // do nothing if playlayer is nullptr
