@@ -24,14 +24,13 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Geode CLI
-        run: |
-          bash -c "$(curl -fsSL https://raw.githubusercontent.com/geode-sdk/cli/main/install.sh)"
-
-      - name: Build Mod Package
-        run: |
-          # Verify the CLI location and build
-          ~/.local/bin/geode build --platform MacOS --config RelWithDebInfo
+      - name: Build the mod
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          bindings: geode-sdk/bindings
+          bindings-ref: main
+          target: MacOS
+          build-config: RelWithDebInfo
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
