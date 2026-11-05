@@ -43,5 +43,12 @@ CPMAddPackage(
     VERSION 3.11.3
 )
 
+# rift: text/expression scripting library used by labels and Discord RPC
+CPMAddPackage(
+    NAME rift
+    GITHUB_REPOSITORY EclipseMenu/rift
+    GIT_TAG v2.0.2
+)
+
 add_library(third_party INTERFACE)
-target_link_libraries(third_party INTERFACE imgui nlohmann_json::nlohmann_json)
+target_link_libraries(third_party INTERFACE imgui nlohmann_json::nlohmann_json rift)
