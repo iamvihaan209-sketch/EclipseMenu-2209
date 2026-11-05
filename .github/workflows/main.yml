@@ -14,7 +14,9 @@ on:
 jobs:
   build:
     name: Build for macOS Intel
-    runs-on: macos-26-intel
+    runs-on: macos-13
+    env:
+      PATH: ${{ github.workspace }}/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
     steps:
       - name: Checkout Repository
@@ -25,13 +27,11 @@ jobs:
       - name: Install Geode CLI
         run: |
           bash -c "$(curl -fsSL https://raw.githubusercontent.com/geode-sdk/cli/main/install.sh)"
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Build Mod Package
         run: |
-          # Add .local/bin to PATH for this step just in case
-          export PATH="$HOME/.local/bin:$PATH"
-          geode build --platform MacOS --config RelWithDebInfo
+          # Verify the CLI location and build
+          ~/.local/bin/geode build --platform MacOS --config RelWithDebInfo
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
