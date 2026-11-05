@@ -43,7 +43,7 @@ namespace eclipse::hacks::Recorder {
             if(result)
                 return;
 
-            geode::utils::file::openFolder(geode::Mod::get()->getSaveDir().toStdPath() / "renders");
+            geode::utils::file::openFolder(geode::Mod::get()->getSaveDir().toStdPath().unwrap() / "renders");
         });
     }
 
@@ -86,7 +86,7 @@ namespace eclipse::hacks::Recorder {
         trimmedLevelName.erase(std::remove(trimmedLevelName.begin(), trimmedLevelName.end(), '/'), trimmedLevelName.end());
         trimmedLevelName.erase(std::remove(trimmedLevelName.begin(), trimmedLevelName.end(), '\\'), trimmedLevelName.end());
         trimmedLevelName = std::regex_replace(trimmedLevelName, std::regex("\\s+"), " ");
-        std::filesystem::path renderDirectory = geode::Mod::get()->getSaveDir().toStdPath() / "renders" / STR(trimmedLevelName);
+        std::filesystem::path renderDirectory = geode::Mod::get()->getSaveDir().toStdPath().unwrap() / "renders" / STR(trimmedLevelName);
 
         if (!std::filesystem::exists(renderDirectory))
             std::filesystem::create_directories(renderDirectory);
@@ -129,7 +129,7 @@ namespace eclipse::hacks::Recorder {
         trimmedLevelName.erase(std::remove(trimmedLevelName.begin(), trimmedLevelName.end(), '/'), trimmedLevelName.end());
         trimmedLevelName.erase(std::remove(trimmedLevelName.begin(), trimmedLevelName.end(), '\\'), trimmedLevelName.end());
         trimmedLevelName = std::regex_replace(trimmedLevelName, std::regex("\\s+"), " ");
-        auto renderPath = geode::Mod::get()->getSaveDir().toStdPath() / "renders" / STR(trimmedLevelName) / (fmt::format("{} - {}.mp4", trimmedLevelName, lvl->m_levelID.value()));
+        auto renderPath = geode::Mod::get()->getSaveDir().toStdPath().unwrap() / "renders" / STR(trimmedLevelName) / (fmt::format("{} - {}.mp4", trimmedLevelName, lvl->m_levelID.value()));
 
         if (!std::filesystem::exists(renderPath)) {
             geode::log::error("Render {} not found", renderPath);

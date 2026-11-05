@@ -27,7 +27,7 @@ namespace eclipse::gui {
     }
 
     void ThemeManager::init() {
-        if (!loadTheme(geode::Mod::get()->getSaveDir().toStdPath() / "theme.json")) {
+        if (!loadTheme(geode::Mod::get()->getSaveDir().toStdPath().unwrap() / "theme.json")) {
             // theme not created, load a built-in one
             auto themes = listAvailableThemes();
             if (themes.empty()) {
@@ -194,7 +194,7 @@ namespace eclipse::gui {
     }
 
     void ThemeManager::saveTheme() const {
-        saveTheme(geode::Mod::get()->getSaveDir().toStdPath() / "theme.json");
+        saveTheme(geode::Mod::get()->getSaveDir().toStdPath().unwrap() / "theme.json");
     }
 
     void ThemeManager::applyValues(nlohmann::json& json, bool flatten) const {

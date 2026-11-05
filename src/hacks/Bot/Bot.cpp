@@ -22,14 +22,14 @@ namespace eclipse::hacks::Bot {
             if(!result)
                 return;
             
-            s_bot.save(Mod::get()->getSaveDir().toStdPath() / "replays" / (name + ".gdr"));
-            config::set("bot.selectedreplay", Mod::get()->getSaveDir().toStdPath() / "replays" / (name + ".gdr"));
+            s_bot.save(Mod::get()->getSaveDir().toStdPath().unwrap() / "replays" / (name + ".gdr"));
+            config::set("bot.selectedreplay", Mod::get()->getSaveDir().toStdPath().unwrap() / "replays" / (name + ".gdr"));
 
         }, "Create", "Cancel", "");
     }
 
     void saveReplay() {
-        std::filesystem::path replayDirectory = Mod::get()->getSaveDir().toStdPath() / "replays";
+        std::filesystem::path replayDirectory = Mod::get()->getSaveDir().toStdPath().unwrap() / "replays";
 
         if (!std::filesystem::exists(replayDirectory))
             std::filesystem::create_directory(replayDirectory);
@@ -114,7 +114,7 @@ namespace eclipse::hacks::Bot {
             tab->addRadioButton("Record", "bot.state", 1)->callback(updateBotState)->handleKeybinds();
             tab->addRadioButton("Playback", "bot.state", 2)->callback(updateBotState)->handleKeybinds();
 
-            tab->addFilesystemCombo("Replays", "bot.selectedreplay", Mod::get()->getSaveDir().toStdPath() / "replays");
+            tab->addFilesystemCombo("Replays", "bot.selectedreplay", Mod::get()->getSaveDir().toStdPath().unwrap() / "replays");
             tab->addButton("New")->callback(newReplay);
             tab->addButton("Save")->callback(saveReplay);
             tab->addButton("Load")->callback(loadReplay);
