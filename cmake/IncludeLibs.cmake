@@ -43,5 +43,12 @@ CPMAddPackage(
     VERSION 3.11.3
 )
 
+# GDReplayFormat (gdr2 branch): replay format used by the Bot module
+CPMAddPackage(
+    NAME libGDR
+    GITHUB_REPOSITORY maxnut/GDReplayFormat
+    GIT_TAG gdr2
+)
+
 add_library(third_party INTERFACE)
-target_link_libraries(third_party INTERFACE imgui nlohmann_json::nlohmann_json)
+target_link_libraries(third_party INTERFACE imgui nlohmann_json::nlohmann_json libGDR)
