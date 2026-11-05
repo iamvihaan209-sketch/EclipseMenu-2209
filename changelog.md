@@ -1,5 +1,8 @@
 # Eclipse Menu
 
+## Unreleased
+Work in progress: porting to Geode `6.0.0-alpha.1` and Geometry Dash `2.2091`. Not yet verified by a build.
+
 ## v1.0.0-beta.4
 **<cg>Geometry Dash v2.2074</c> support**  
 No Android support yet, but we're working on it!
