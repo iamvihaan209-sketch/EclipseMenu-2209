@@ -222,7 +222,6 @@ namespace eclipse::utils {
             m_stateForce = player->m_stateForce;
             m_stateForceVector = player->m_stateForceVector;
             m_affectedByForces = player->m_affectedByForces;
-            m_jumpPadRelated = player->m_jumpPadRelated; // map<int, bool>
             m_somethingPlayerSpeedTime = player->m_somethingPlayerSpeedTime;
             m_playerSpeedAC = player->m_playerSpeedAC;
             m_fixRobotJump = player->m_fixRobotJump;
@@ -245,8 +244,6 @@ namespace eclipse::utils {
             m_rotation = player->getRotation();
 
             m_rotateObjectsRelated = player->m_rotateObjectsRelated; // unordered_map<int, GJPointDouble>
-            m_maybeRotatedObjectsMap = player->m_maybeRotatedObjectsMap; // unordered_map<int, GameObject*>
-            m_ringRelatedSet = player->m_ringRelatedSet; // unordered_set<int>
             m_touchedRings = player->m_touchedRings; // unordered_set<int>
         }
 
@@ -458,7 +455,6 @@ namespace eclipse::utils {
             player->m_stateForce = m_stateForce;
             player->m_stateForceVector = m_stateForceVector;
             player->m_affectedByForces = m_affectedByForces;
-            player->m_jumpPadRelated = m_jumpPadRelated;
             player->m_somethingPlayerSpeedTime = m_somethingPlayerSpeedTime;
             player->m_playerSpeedAC = m_playerSpeedAC;
             player->m_fixRobotJump = m_fixRobotJump;
@@ -482,8 +478,6 @@ namespace eclipse::utils {
             player->setRotation(m_rotation);
 
             player->m_rotateObjectsRelated = m_rotateObjectsRelated;
-            player->m_maybeRotatedObjectsMap = m_maybeRotatedObjectsMap;
-            player->m_ringRelatedSet = m_ringRelatedSet;
             player->m_touchedRings = m_touchedRings;
         }
 
@@ -534,7 +528,6 @@ namespace eclipse::utils {
         bool m_slopeFlipGravityRelated;
         float m_slopeAngleRadians;
         std::unordered_map<int, GJPointDouble> m_rotateObjectsRelated;
-        std::unordered_map<int, GameObject*> m_maybeRotatedObjectsMap;
         float m_rotationSpeed;
         float m_rotateSpeed;
         bool m_isRotating;
@@ -568,7 +561,6 @@ namespace eclipse::utils {
         double m_accelerationOrSpeed;
         double m_snapDistance;
         bool m_ringJumpRelated;
-        std::unordered_set<int> m_ringRelatedSet;
         GameObject* m_objectSnappedTo;
         CheckpointObject* m_pendingCheckpoint;
         int m_onFlyCheckpointTries;
@@ -701,7 +693,6 @@ namespace eclipse::utils {
         int m_stateForce;
         cocos2d::CCPoint m_stateForceVector;
         bool m_affectedByForces;
-        std::map<int, bool> m_jumpPadRelated;
         float m_somethingPlayerSpeedTime;
         float m_playerSpeedAC;
         bool m_fixRobotJump;
