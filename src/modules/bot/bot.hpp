@@ -10,8 +10,8 @@ namespace eclipse::bot {
         PLAYBACK
     };
 
-    struct BotReplay : public gdr::Replay<BotReplay, gdr::Input> {
-        BotReplay() : Replay("Bot", "1.0") {}
+    struct BotReplay : public gdr::Replay<BotReplay, gdr::Input<>> {
+        BotReplay() : Replay("Bot", 1) {}
     };
 
     class Bot {
@@ -42,7 +42,7 @@ namespace eclipse::bot {
         /// @brief Get the next available input from the currently loaded replay.
         /// @param frame The current frame of the playback.
         /// @return The next input from the currently loaded replay, if available.
-        [[nodiscard]] std::optional<gdr::Input> poll(int frame);
+        [[nodiscard]] std::optional<gdr::Input<>> poll(int frame);
 
         /// @brief Saves the current replay.
         /// @param path Path to save the replay to.
@@ -56,7 +56,7 @@ namespace eclipse::bot {
         /// @param levelInfo The level info.
         void setLevelInfo(gdr::Level levelInfo);
 
-        [[nodiscard]] std::optional<gdr::Input> getPrevious(bool player1);
+        [[nodiscard]] std::optional<gdr::Input<>> getPrevious(bool player1);
 
     protected:
         State m_state = State::DISABLED;

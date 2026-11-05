@@ -1,4 +1,5 @@
 #include "manager.hpp"
+#include <asp/fs/std.hpp>
 #include <filesystem>
 #include <nlohmann/json.hpp>
 #include <modules/config/config.hpp>
@@ -26,7 +27,7 @@ namespace eclipse::gui {
     }
 
     void ThemeManager::init() {
-        if (!loadTheme(geode::Mod::get()->getSaveDir() / "theme.json")) {
+        if (!loadTheme(geode::Mod::get()->getSaveDir().toStdPath() / "theme.json")) {
             // theme not created, load a built-in one
             auto themes = listAvailableThemes();
             if (themes.empty()) {
@@ -193,7 +194,7 @@ namespace eclipse::gui {
     }
 
     void ThemeManager::saveTheme() const {
-        saveTheme(geode::Mod::get()->getSaveDir() / "theme.json");
+        saveTheme(geode::Mod::get()->getSaveDir().toStdPath() / "theme.json");
     }
 
     void ThemeManager::applyValues(nlohmann::json& json, bool flatten) const {

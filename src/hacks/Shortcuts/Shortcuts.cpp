@@ -1,4 +1,5 @@
 #include <modules/gui/gui.hpp>
+#include <asp/fs/std.hpp>
 #include <modules/hack/hack.hpp>
 #include <modules/config/config.hpp>
 
@@ -151,7 +152,7 @@ namespace eclipse::hacks::Shortcuts {
 #endif
 
         static void openSaveFolder() {
-            auto path = geode::dirs::getSaveDir();
+            auto path = geode::dirs::getSaveDir().toStdPath();
             geode::utils::file::openFolder(path);
         }
 

@@ -21,14 +21,14 @@ namespace eclipse::bot {
     }
 
     void Bot::removeInputsAfter(int frame) {
-        std::erase_if(m_replay.inputs, [&](const gdr::Input& input) -> bool { return input.frame > frame; });
+        std::erase_if(m_replay.inputs, [&](const gdr::Input<>& input) -> bool { return input.frame > frame; });
     }
 
     void Bot::recordInput(int frame, PlayerButton button, bool player2, bool pressed) {
         m_replay.inputs.emplace_back(frame, static_cast<int>(button), player2, pressed);
     }
 
-    std::optional<gdr::Input> Bot::poll(int frame) {
+    std::optional<gdr::Input<>> Bot::poll(int frame) {
         if (m_inputIndex >= m_replay.inputs.size())
             return std::nullopt;
 
@@ -38,7 +38,7 @@ namespace eclipse::bot {
         return std::nullopt;
     }
 
-    std::optional<gdr::Input> Bot::getPrevious(bool player1) {
+    std::optional<gdr::Input<>> Bot::getPrevious(bool player1) {
         for (int i = m_inputIndex - 2; i >= 0; i--) {
             if (m_replay.inputs[i].player2 == !player1)
                 return m_replay.inputs[i];

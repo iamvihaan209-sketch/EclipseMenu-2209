@@ -4,6 +4,7 @@
 #include <modules/config/config.hpp>
 #include <modules/bot/bot.hpp>
 #include <modules/keybinds/manager.hpp>
+#include <asp/fs/std.hpp>
 
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
@@ -21,14 +22,14 @@ namespace eclipse::hacks::Bot {
             if(!result)
                 return;
             
-            s_bot.save(Mod::get()->getSaveDir() / "replays" / (name + ".gdr"));
-            config::set("bot.selectedreplay", Mod::get()->getSaveDir() / "replays" / (name + ".gdr"));
+            s_bot.save(Mod::get()->getSaveDir().toStdPath() / "replays" / (name + ".gdr"));
+            config::set("bot.selectedreplay", Mod::get()->getSaveDir().toStdPath() / "replays" / (name + ".gdr"));
 
         }, "Create", "Cancel", "");
     }
 
     void saveReplay() {
-        std::filesystem::path replayDirectory = Mod::get()->getSaveDir() / "replays";
+        std::filesystem::path replayDirectory = Mod::get()->getSaveDir().toStdPath() / "replays";
 
         if (!std::filesystem::exists(replayDirectory))
             std::filesystem::create_directory(replayDirectory);
@@ -113,7 +114,7 @@ namespace eclipse::hacks::Bot {
             tab->addRadioButton("Record", "bot.state", 1)->callback(updateBotState)->handleKeybinds();
             tab->addRadioButton("Playback", "bot.state", 2)->callback(updateBotState)->handleKeybinds();
 
-            tab->addFilesystemCombo("Replays", "bot.selectedreplay", Mod::get()->getSaveDir() / "replays");
+            tab->addFilesystemCombo("Replays", "bot.selectedreplay", Mod::get()->getSaveDir().toStdPath() / "replays");
             tab->addButton("New")->callback(newReplay);
             tab->addButton("Save")->callback(saveReplay);
             tab->addButton("Load")->callback(loadReplay);
@@ -131,8 +132,8 @@ namespace eclipse::hacks::Bot {
     REGISTER_HACK(Bot)
 
     class $modify(BotPLHook, PlayLayer) {
-        bool init(GJGameLevel* gj, bool p1, bool p2) {
-            bool result = PlayLayer::init(gj, p1, p2);
+        bool init(GJGameLevel* gj, bool dontCreateObjects) {
+            bool result = PlayLayer::init(gj, dontCreateObjects);
             s_bot.setLevelInfo(gdr::Level(gj->m_levelName, gj->m_levelID.value()));
             return result;
         }
@@ -186,13 +187,13 @@ namespace eclipse::hacks::Bot {
     };
 
     class $modify(BotBGLHook, GJBaseGameLayer) {
-        void processCommands(float dt) {
-            GJBaseGameLayer::processCommands(dt);
+        void processCommands(float dt, bool isHalfTick, bool isLastTick) {
+            GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
 
             if (s_bot.getState() != bot::State::PLAYBACK)
                 return;
 
-            std::optional<gdr::Input> input = std::nullopt;
+            std::optional<gdr::Input<>> input = std::nullopt;
 
             while ((input = s_bot.poll(m_gameState.m_currentProgress)) != std::nullopt) {
                 GJBaseGameLayer::handleButton(input->down, (int) input->button, !input->player2);

@@ -1,4 +1,5 @@
 #include "config.hpp"
+#include <asp/fs/std.hpp>
 
 #include <fstream>
 #include <Geode/loader/Mod.hpp>
@@ -44,7 +45,7 @@ namespace eclipse::config {
     }
 
     void load() {
-        auto path = geode::Mod::get()->getSaveDir() / "config.json";
+        auto path = geode::Mod::get()->getSaveDir().toStdPath() / "config.json";
         if (!loadFile(path)) {
             geode::log::warn("Failed to load config file, creating a new one.");
             storage = nlohmann::json::object();
@@ -60,12 +61,12 @@ namespace eclipse::config {
     }
 
     void save() {
-        auto path = geode::Mod::get()->getSaveDir() / "config.json";
+        auto path = geode::Mod::get()->getSaveDir().toStdPath() / "config.json";
         saveFile(path);
     }
 
     void saveProfile(std::string_view profile) {
-        auto profilesDir = geode::Mod::get()->getSaveDir() / "profiles";
+        auto profilesDir = geode::Mod::get()->getSaveDir().toStdPath() / "profiles";
         std::filesystem::create_directories(profilesDir);
 
         auto path = profilesDir / fmt::format("{}.json", profile);
@@ -73,7 +74,7 @@ namespace eclipse::config {
     }
 
     void loadProfile(std::string_view profile) {
-        auto profilesDir = geode::Mod::get()->getSaveDir() / "profiles";
+        auto profilesDir = geode::Mod::get()->getSaveDir().toStdPath() / "profiles";
         auto path = profilesDir / fmt::format("{}.json", profile);
         if (!loadFile(path)) {
             geode::log::warn("Failed to load profile: {}", profile);
@@ -82,7 +83,7 @@ namespace eclipse::config {
     }
 
     void deleteProfile(std::string_view profile) {
-        auto profilesDir = geode::Mod::get()->getSaveDir() / "profiles";
+        auto profilesDir = geode::Mod::get()->getSaveDir().toStdPath() / "profiles";
         auto path = profilesDir / fmt::format("{}.json", profile);
 
         if (std::filesystem::exists(path))
@@ -91,7 +92,7 @@ namespace eclipse::config {
 
     std::vector<std::string> getProfiles() {
         std::vector<std::string> profiles;
-        auto profilesDir = geode::Mod::get()->getSaveDir() / "profiles";
+        auto profilesDir = geode::Mod::get()->getSaveDir().toStdPath() / "profiles";
         if (!std::filesystem::exists(profilesDir)) {
             return profiles;
         }
