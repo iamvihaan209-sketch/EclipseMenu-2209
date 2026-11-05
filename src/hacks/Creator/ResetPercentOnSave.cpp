@@ -20,9 +20,10 @@ namespace eclipse::hacks::Creator {
 
     class $modify(ResetPercentEPLHook, EditorPauseLayer) {
         ADD_HOOKS_DELEGATE("creator.resetpercentonsave")
-        void saveLevel() {
+        // saveLevel is inline on Windows and cannot be hooked, so hook onSave, which calls it
+        void onSave(CCObject* sender) {
             if (m_editorLayer->m_level->m_levelType == GJLevelType::Editor) m_editorLayer->m_level->m_normalPercent = 0;
-            EditorPauseLayer::saveLevel();
+            EditorPauseLayer::onSave(sender);
         }
     };
 }

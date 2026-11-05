@@ -50,7 +50,8 @@ namespace eclipse::hacks::Creator {
 
     // 2.207 added "read-only" mode into editor
     // we want to disable it
-#if GEODE_COMP_GD_VERSION > 22070
+// EditorUI::onSettings has no address for Intel Mac in the bindings, so skip it there
+#if GEODE_COMP_GD_VERSION > 22070 && !defined(GEODE_IS_INTEL_MAC)
     class $modify(LevelEditEUIHook, EditorUI) {
         void onSettings(CCObject* sender) {
             auto level = this->m_editorLayer->m_level;
