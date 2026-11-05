@@ -29,12 +29,12 @@ namespace eclipse::hacks::Level {
             );
         }
 
-        bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects) {
+        bool init(GJGameLevel* level, bool dontCreateObjects) {
             auto* GSM = GameStatsManager::sharedState();
 
             m_fields->totalAttempts = GSM->getStat("2");
 
-            return PlayLayer::init(level, useReplay, dontCreateObjects);
+            return PlayLayer::init(level, dontCreateObjects);
         }
 
         void updateAttempts() {}

@@ -50,8 +50,8 @@ namespace eclipse::hacks::Global {
         }
     };
 
-    // LevelCell::onClick has no address for arm Mac in the bindings, so skip it there
-#if !defined(GEODE_IS_ARM_MAC)
+    // LevelCell::onClick has no address on macOS in the bindings, so skip it there
+#if !defined(GEODE_IS_MACOS)
     class $modify(CompactLevelsCommentsLCHook, LevelCell) {
         void onClick(CCObject* sender) {
             // get the "view" button to work with compact mode in "my levels"

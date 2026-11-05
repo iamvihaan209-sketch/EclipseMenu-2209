@@ -241,8 +241,8 @@ namespace eclipse::hacks::Player {
     static TrajectorySimulation s_simulation;
 
     class $modify(ShowTrajectoryPLHook, PlayLayer) {
-        bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects) {
-            if (!PlayLayer::init(level, useReplay, dontCreateObjects)) return false;
+        bool init(GJGameLevel* level, bool dontCreateObjects) {
+            if (!PlayLayer::init(level, dontCreateObjects)) return false;
 
             s_simulation.init();
 

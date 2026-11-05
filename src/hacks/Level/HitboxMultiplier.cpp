@@ -91,9 +91,9 @@ namespace eclipse::hacks::Level {
     REGISTER_HACK(HitboxMultiplier)
 
     class $modify(HitboxMultiplierPLHook, PlayLayer) {
-        bool init(GJGameLevel* level, bool unk, bool dontCreateObjects) {
+        bool init(GJGameLevel* level, bool dontCreateObjects) {
             reset();
-            return PlayLayer::init(level, unk, dontCreateObjects);
+            return PlayLayer::init(level, dontCreateObjects);
         }
 
         void resetLevel() {

@@ -16,8 +16,8 @@ namespace eclipse::hacks::Level {
             m_levelSettings->m_fixGravityBug = newState ? false : m_fields->originalFixGravityVal; 
         }
 
-        bool init(GJGameLevel *level, bool useReplay, bool dontCreateObjects) {
-            if (!PlayLayer::init(level, useReplay, dontCreateObjects)) return false;
+        bool init(GJGameLevel* level, bool dontCreateObjects) {
+            if (!PlayLayer::init(level, dontCreateObjects)) return false;
             m_fields->originalFixGravityVal = m_levelSettings->m_fixGravityBug;
             if (config::get<bool>("level.legacyreversephysics", false))
                 m_levelSettings->m_fixGravityBug = false;
