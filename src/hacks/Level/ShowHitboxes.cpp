@@ -289,8 +289,8 @@ namespace eclipse::hacks::Level {
     };
 
     class $modify(ShowHitboxesBGLHook, GJBaseGameLayer) {
-        void processCommands(float dt) {
-            GJBaseGameLayer::processCommands(dt);
+        void processCommands(float dt, bool isHalfTick, bool isLastTick) {
+            GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
 
             if (s_isDead || !config::get<bool>("level.showhitboxes.traillength.toggle", false))
                 return;

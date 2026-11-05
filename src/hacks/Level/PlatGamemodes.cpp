@@ -20,6 +20,11 @@ namespace eclipse::hacks::Level {
     REGISTER_HACK(PlatGamemodes)
 
     class $modify(PlatGamemodesBGLHook, GJBaseGameLayer) {
+        struct Fields {
+            GameObject* m_portalPtr1 = nullptr;
+            GameObject* m_portalPtr2 = nullptr;
+        };
+
         ADD_HOOKS_DELEGATE("level.platgamemodes")
 
         void collisionCheckObjects(PlayerObject* player, std::vector<GameObject*>* sectionObjects, int objectCount, float dt) {
@@ -49,9 +54,9 @@ namespace eclipse::hacks::Level {
                 player->m_lastPortalPos = obj->getPosition();
                 player->m_lastActivatedPortal = obj;
                 auto* portalObj = obj;
-                if (m_gameState.m_isDualMode && m_gameState.m_unkGameObjPtr2)
-                    portalObj = m_gameState.m_unkGameObjPtr2;
-                m_gameState.m_unkGameObjPtr1 = portalObj;
+                if (m_gameState.m_isDualMode && m_fields->m_portalPtr2)
+                    portalObj = m_fields->m_portalPtr2;
+                m_fields->m_portalPtr1 = portalObj;
 
                 if (obj->m_objectType == GameObjectType::WavePortal)
                     player->toggleDartMode(true, portalObj->m_hasNoEffects);
