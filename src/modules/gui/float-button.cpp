@@ -49,7 +49,6 @@ namespace eclipse::gui {
         this->addChild(m_sprite);
 
         CCScene::get()->addChild(this);
-        geode::SceneManager::get()->keepAcrossScenes(this);
 
         return true;
     }
