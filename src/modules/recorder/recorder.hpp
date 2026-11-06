@@ -1,3 +1,5 @@
+// eclipse.ffmpeg-api is linked as a dylib on macOS and fails to load there, so the recorder is compiled out.
+#ifndef GEODE_IS_MACOS
 #pragma once
 #include <Geode/platform/platform.hpp>
 #include <eclipse.ffmpeg-api/include/render_settings.hpp>
@@ -39,3 +41,4 @@ namespace eclipse::recorder {
         RenderTexture m_renderTexture;
     };
 };
+#endif // GEODE_IS_MACOS

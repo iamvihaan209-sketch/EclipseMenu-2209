@@ -1,3 +1,5 @@
+// eclipse.ffmpeg-api is linked as a dylib on macOS and fails to load there, so the recorder is compiled out.
+#ifndef GEODE_IS_MACOS
 #include <modules/gui/gui.hpp>
 #include <asp/fs/std.hpp>
 #include <modules/hack/hack.hpp>
@@ -385,3 +387,4 @@ namespace eclipse::hacks::Recorder {
     };
 
 };
+#endif // GEODE_IS_MACOS

@@ -1,3 +1,5 @@
+// eclipse.ffmpeg-api is linked as a dylib on macOS and fails to load there, so the recorder is compiled out.
+#ifndef GEODE_IS_MACOS
 #include "recorder.hpp"
 
 #include <eclipse.ffmpeg-api/include/recorder.hpp>
@@ -80,3 +82,4 @@ namespace eclipse::recorder {
         return ffmpegRecorder.getAvailableCodecs();
     }
 }
+#endif // GEODE_IS_MACOS
