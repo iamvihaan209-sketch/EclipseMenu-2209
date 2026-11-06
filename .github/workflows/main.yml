@@ -28,7 +28,7 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           bindings: geode-sdk/bindings
-          bindings-ref: b57d13d2
+          bindings-ref: main
           target: MacOS
           build-config: RelWithDebInfo
 
