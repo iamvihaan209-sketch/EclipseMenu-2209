@@ -2,7 +2,6 @@
 #include <memory>
 #include <modules/gui/color.hpp>
 #include <modules/gui/gui.hpp>
-#include <modules/gui/imgui/imgui.hpp>
 
 #define PROPERTY_CS(type, member, name) private: type member; \
 public: type get##name() const { return member; }
@@ -104,21 +103,12 @@ namespace eclipse::gui {
         PROPERTY_CS(RendererType, m_renderer, Renderer)
         void setRenderer(RendererType renderer);
 
-        /// [ImGui] Layout mode
-        PROPERTY_CS(imgui::LayoutMode, m_layoutMode, LayoutMode)
-        void setLayoutMode(imgui::LayoutMode mode);
-        /// [ImGui] Component theme
-        PROPERTY_CS(imgui::ComponentTheme, m_componentTheme, ComponentTheme)
-        void setComponentTheme(imgui::ComponentTheme theme);
-
         /// [ImGui] Global UI Scale
         PROPERTY(float, m_uiScale, UIScale)
 
         /// [ImGui] Font file name
         CR_PROPERTY_CS(std::string, m_selectedFont, SelectedFont)
         void setSelectedFont(const std::string& value);
-        void setSelectedFont(int index);
-        static std::vector<std::string> getFontNames();
         /// [ImGui] Font size
         PROPERTY_CS(float, m_fontSize, FontSize)
         void setFontSize(float value);

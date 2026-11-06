@@ -873,7 +873,6 @@ namespace eclipse::gui {
 
     enum class RendererType {
         None = -1,
-        ImGui,
         Cocos2d
     };
 

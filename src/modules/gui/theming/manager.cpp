@@ -3,7 +3,6 @@
 #include <filesystem>
 #include <nlohmann/json.hpp>
 #include <modules/config/config.hpp>
-#include <modules/gui/imgui/imgui.hpp>
 #include <Geode/Loader.hpp>
 #include <Geode/utils/cocos.hpp>
 
@@ -43,15 +42,7 @@ namespace eclipse::gui {
     }
 
     void ThemeManager::setDefaults() {
-#ifdef GEODE_IS_DESKTOP
-        m_renderer = RendererType::ImGui;
-        m_layoutMode = imgui::LayoutMode::Tabbed;
-#else
         m_renderer = RendererType::Cocos2d;
-        m_layoutMode = imgui::LayoutMode::Panel;
-#endif
-
-        m_componentTheme = imgui::ComponentTheme::MegaHack;
         m_schemaVersion = THEME_SCHEMA_VERSION;
 
         m_uiScale = 1.f;
@@ -122,12 +113,8 @@ namespace eclipse::gui {
         try_assign(m_themeAuthor, details, "author");
 
         auto renderer = json_try_get<int>(details, "renderer");
-        auto layout = json_try_get<int>(details, "layout");
-        auto theme = json_try_get<int>(details, "style");
 
         if (renderer) this->setRenderer(static_cast<RendererType>(*renderer));
-        if (layout) this->setLayoutMode(static_cast<imgui::LayoutMode>(*layout));
-        if (theme) this->setComponentTheme(static_cast<imgui::ComponentTheme>(*theme));
 
         auto other = json["other"];
         try_assign(m_uiScale, other, "uiScale");
@@ -136,7 +123,6 @@ namespace eclipse::gui {
         float fontSize = m_fontSize;
         try_assign(fontSize, other, "fontSize");
         this->setFontSize(fontSize);
-        if (auto imgui = imgui::ImGuiRenderer::get()) imgui->reload();
 
         try_assign(m_borderSize, other, "borderSize");
         try_assign(m_framePadding, other, "framePadding");
@@ -207,8 +193,6 @@ namespace eclipse::gui {
         details["description"] = m_themeDescription;
         details["author"] = m_themeAuthor;
         details["renderer"] = m_renderer;
-        details["layout"] = m_layoutMode;
-        details["style"] = m_componentTheme;
         details["schema"] = m_schemaVersion;
 
         blur["blurEnabled"] = m_enableBlur;
@@ -265,7 +249,7 @@ namespace eclipse::gui {
     }
 
     float ThemeManager::getGlobalScale() const {
-        return m_uiScale * config::getTemp<float>("ui.scale", 1.f) * imgui::DEFAULT_SCALE;
+        return m_uiScale * config::getTemp<float>("ui.scale", 1.f) ;
     }
 
     std::optional<ThemeMeta> ThemeManager::checkTheme(const std::filesystem::path &path) {
@@ -338,42 +322,8 @@ namespace eclipse::gui {
         m_renderer = renderer;
     }
 
-    void ThemeManager::setLayoutMode(imgui::LayoutMode mode) {
-        if (auto imgui = imgui::ImGuiRenderer::get()) {
-            geode::log::debug("ThemeManager::setLayoutMode - setting new layout");
-            imgui->setLayoutMode(mode);
-        }
-        m_layoutMode = mode;
-    }
-
-    void ThemeManager::setComponentTheme(imgui::ComponentTheme theme) {
-        if (auto imgui = imgui::ImGuiRenderer::get()) {
-            imgui->setComponentTheme(theme);
-        }
-        m_componentTheme = theme;
-    }
-
     void ThemeManager::setSelectedFont(const std::string &value) {
-        if (auto imgui = imgui::ImGuiRenderer::get()) {
-            imgui->getFontManager().setFont(value);
-        }
         m_selectedFont = value;
-    }
-
-    void ThemeManager::setSelectedFont(int index) {
-        auto fonts = getFontNames();
-        if (fonts.size() <= index) return;
-        setSelectedFont(fonts[index]);
-    }
-
-    std::vector<std::string> ThemeManager::getFontNames() {
-        auto fonts = imgui::FontManager::fetchAvailableFonts();
-        std::vector<std::string> result;
-        result.reserve(fonts.size());
-        for (auto& font : fonts) {
-            result.emplace_back(font.getName());
-        }
-        return result;
     }
 
     void ThemeManager::setFontSize(float value) {

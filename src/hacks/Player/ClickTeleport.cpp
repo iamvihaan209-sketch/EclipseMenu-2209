@@ -3,7 +3,6 @@
 #include <modules/hack/hack.hpp>
 #include <modules/config/config.hpp>
 #include <modules/keybinds/manager.hpp>
-#include <imgui.h>
 
 #ifndef GEODE_IS_ANDROID
 
@@ -35,17 +34,6 @@ namespace eclipse::hacks::Player {
         auto point = ccp(cameraPos.x + scaledPos.x, cameraPos.y + scaledPos.y);
 
         return point;
-    }
-
-    cocos2d::CCPoint screenToFrame(const ImVec2& pos) {
-        auto* director = cocos2d::CCDirector::sharedDirector();
-        const auto frameSize = director->getOpenGLView()->getFrameSize();
-        const auto winSize = director->getWinSize();
-
-        return {
-            pos.x / frameSize.width * winSize.width,
-            (1.f - pos.y / frameSize.height) * winSize.height
-        };
     }
 
     class ClickTeleport : public hack::Hack {

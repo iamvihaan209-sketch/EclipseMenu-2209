@@ -11,10 +11,6 @@ namespace eclipse::gui {
     const Color Color::CYAN = {0, 1, 1};
     const Color Color::MAGENTA = {1, 0, 1};
 
-    Color::operator ImU32() const {
-        return ImGui::ColorConvertFloat4ToU32(ImVec4(r, g, b, a));
-    }
-
     Color &Color::operator=(const Color &other) {
         if (this == &other) return *this;
         r = other.r;
@@ -32,18 +28,6 @@ namespace eclipse::gui {
         a = other.a;
         other.r = other.g = other.b = 0;
         other.a = 1.0f;
-        return *this;
-    }
-
-    Color::operator ImVec4() const {
-        return {r, g, b, a};
-    }
-
-    Color &Color::operator=(const ImVec4 &col2) {
-        r = col2.x;
-        g = col2.y;
-        b = col2.z;
-        a = col2.w;
         return *this;
     }
 

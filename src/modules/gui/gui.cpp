@@ -3,7 +3,6 @@
 #include <modules/config/config.hpp>
 #include <algorithm>
 
-#include "imgui/imgui.hpp"
 #include "cocos/cocos.hpp"
 #include "theming/manager.hpp"
 
@@ -255,19 +254,8 @@ namespace eclipse::gui {
         if (m_renderer && type == m_renderer->getType()) return;
         if (m_renderer) m_renderer->shutdown();
 
-        switch (type) {
-            default:
-#ifndef GEODE_IS_MOBILE
-            case RendererType::ImGui:
-                m_renderer = std::make_shared<imgui::ImGuiRenderer>();
-                break;
-#endif
-#ifndef GEODE_IS_DESKTOP
-            case RendererType::Cocos2d:
-                m_renderer = std::make_shared<cocos::CocosRenderer>();
-                break;
-#endif
-        }
+        (void)type;
+        m_renderer = std::make_shared<cocos::CocosRenderer>();
 
         m_renderer->init();
     }

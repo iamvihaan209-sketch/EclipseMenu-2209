@@ -3,7 +3,6 @@
 #include <modules/config/config.hpp>
 #include <modules/hack/hack.hpp>
 #include <modules/gui/gui.hpp>
-#include <modules/gui/imgui/imgui.hpp>
 
 #ifdef GEODE_IS_WINDOWS
 #include <Geode/modify/CCEGLView.hpp>
@@ -513,10 +512,6 @@ namespace eclipse::keybinds {
     }
 
     inline bool shouldIgnoreInputs() {
-        // Ignore if imgui is capturing inputs or if the keyboard is being used
-        if (gui::imgui::ImGuiRenderer::get() && ImGui::GetIO().WantTextInput)
-            return true;
-
         // Ignore if the keyboard is being used
         if (CCIMEDispatcher::sharedDispatcher()->hasDelegate())
             return true;

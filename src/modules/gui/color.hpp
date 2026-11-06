@@ -1,6 +1,5 @@
 #pragma once
 
-#include <imgui.h>
 #include <cocos2d.h>
 #include <string>
 #include <cmath>
@@ -35,14 +34,6 @@ namespace eclipse::gui {
 
         Color& operator=(Color&& other) noexcept;
 
-        /// @brief Converts the color to ImVec4
-        operator ImVec4() const;
-
-        /// @brief Converts the color to ImU32
-        operator ImU32() const;
-
-        Color& operator=(const ImVec4& col2);
-
         operator cocos2d::ccColor4F() const;
 
         /// @brief Returns a pointer to the color data
@@ -56,13 +47,6 @@ namespace eclipse::gui {
         /// @param a Alpha
         /// @return New color
         static Color fromHSV(float h, float s, float v, float a = 1.0f);
-
-        /// @brief Creates a new color from HSV values
-        /// @param hsv HSV values
-        /// @return New color
-        static Color fromHSV(const ImVec4& hsv) {
-            return fromHSV(hsv.x, hsv.y, hsv.z, hsv.w);
-        }
 
         enum class IntType {
             RGBA, ARGB,
