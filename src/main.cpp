@@ -34,13 +34,10 @@ class $modify(EclipseButtonMLHook, MenuLayer) {
         gui::FloatingButton::get()->setCallback([]{ toggleMenu(); });
         #endif
 
-        // Register the keybind using Geode v6 event filters
-        new EventListener<KeybindFilter>([=](KeybindEvent* event) {
-            if (event->isDown()) {
-                toggleMenu();
-            }
-            return ListenerResult::Propagate;
-        }, KeybindFilter("menu.toggle"));
+        // Toggle the menu when the "menu.toggle" keybind is pressed
+        keybinds::Manager::get()->addListener("menu.toggle", [](bool down) {
+            if (down) toggleMenu();
+        });
 
         config::setIfEmpty("menu.toggleKey", "tab");
         hack::Hack::lateInitializeHacks();

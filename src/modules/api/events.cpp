@@ -7,65 +7,65 @@ using namespace geode::prelude;
 
 template <config::SupportedType T>
 void createGetConfigListener() {
-    new EventListener<EventFilter<events::RequestConfigValueEvent<T>>>(+[](events::RequestConfigValueEvent<T>* e) {
-        auto useInternal = e->getUseInternal();
-        auto res = useInternal ? config::get<T>(e->getKey()) : config::getTemp<T>(e->getKey());
-        if (!res) return ListenerResult::Stop;
-        e->setValue(res.unwrap());
-        return ListenerResult::Stop;
+    events::RequestConfigValueEvent<T>::listeners().push_back([](events::RequestConfigValueEvent<T>& e) {
+        auto useInternal = e.getUseInternal();
+        auto res = useInternal ? config::get<T>(e.getKey()) : config::getTemp<T>(e.getKey());
+        if (!res) return;
+        e.setValue(res.unwrap());
+        return;
     });
 }
 
 template <config::SupportedType T>
 void createSetConfigListener() {
-    new EventListener<EventFilter<events::SetConfigValueEvent<T>>>(+[](events::SetConfigValueEvent<T>* e) {
-        if (e->getUseInternal()) {
-            config::set<T>(e->getKey(), e->getValue());
+    events::SetConfigValueEvent<T>::listeners().push_back([](events::SetConfigValueEvent<T>& e) {
+        if (e.getUseInternal()) {
+            config::set<T>(e.getKey(), e.getValue());
         } else {
-            config::setTemp<T>(e->getKey(), e->getValue());
+            config::setTemp<T>(e.getKey(), e.getValue());
         }
-        return ListenerResult::Stop;
+        return;
     });
 }
 
 $execute {
-    new EventListener<EventFilter<events::CreateMenuTabEvent>>(+[](events::CreateMenuTabEvent* e) {
-        gui::MenuTab::find(e->getName());
-        return ListenerResult::Stop;
+    events::CreateMenuTabEvent::listeners().push_back([](events::CreateMenuTabEvent& e) {
+        gui::MenuTab::find(e.getName());
+        return;
     });
 
     /* Components */
-    new EventListener<EventFilter<events::AddLabelEvent>>(+[](events::AddLabelEvent* e) {
-        auto tab = gui::MenuTab::find(e->getTabName());
-        auto label = tab->addLabel(e->getTitle());
-        e->setUniqueID(label->getUID());
-        return ListenerResult::Stop;
+    events::AddLabelEvent::listeners().push_back([](events::AddLabelEvent& e) {
+        auto tab = gui::MenuTab::find(e.getTabName());
+        auto label = tab->addLabel(e.getTitle());
+        e.setUniqueID(label->getUID());
+        return;
     });
-    new EventListener<EventFilter<events::AddToggleEvent>>(+[](events::AddToggleEvent* e) {
-        auto tab = gui::MenuTab::find(e->getTabName());
-        auto toggle = tab->addToggle(e->getTitle(), e->getID());
-        toggle->callback([callback = std::get<0>(e->getCallbacks())](bool value) {
+    events::AddToggleEvent::listeners().push_back([](events::AddToggleEvent& e) {
+        auto tab = gui::MenuTab::find(e.getTabName());
+        auto toggle = tab->addToggle(e.getTitle(), e.getID());
+        toggle.callback([callback = std::get<0>(e.getCallbacks())](bool value) {
             std::invoke(callback, value);
         })->handleKeybinds()->disableSaving();
-        e->setUniqueID(toggle->getUID());
-        return ListenerResult::Stop;
+        e.setUniqueID(toggle.getUID());
+        return;
     });
-    new EventListener<EventFilter<events::AddButtonEvent>>(+[](events::AddButtonEvent* e) {
-        auto tab = gui::MenuTab::find(e->getTabName());
-        auto button = tab->addButton(e->getTitle());
-        button->callback([callback = std::get<0>(e->getCallbacks())] {
+    events::AddButtonEvent::listeners().push_back([](events::AddButtonEvent& e) {
+        auto tab = gui::MenuTab::find(e.getTabName());
+        auto button = tab->addButton(e.getTitle());
+        button->callback([callback = std::get<0>(e.getCallbacks())] {
             std::invoke(callback);
         });
-        e->setUniqueID(button->getUID());
-        return ListenerResult::Stop;
+        e.setUniqueID(button->getUID());
+        return;
     });
 
     /* Component Descriptions */
-    new EventListener<EventFilter<events::SetComponentDescriptionEvent>>(+[](events::SetComponentDescriptionEvent* e) {
-        auto component = gui::Component::find(e->getID());
-        if (!component) return ListenerResult::Stop;
-        component->setDescription(e->getDescription());
-        return ListenerResult::Stop;
+    events::SetComponentDescriptionEvent::listeners().push_back([](events::SetComponentDescriptionEvent& e) {
+        auto component = gui::Component::find(e.getID());
+        if (!component) return;
+        component->setDescription(e.getDescription());
+        return;
     });
 
     /* Config */

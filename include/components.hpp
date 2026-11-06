@@ -7,7 +7,7 @@
 #include <utility>
 #include <memory>
 #include <Geode/loader/Setting.hpp>
-#include <Geode/loader/Event.hpp>
+#include <bus.hpp>
 
 namespace eclipse::components {
     enum class ComponentType {
@@ -61,7 +61,7 @@ namespace eclipse {
 }
 
 namespace eclipse::events {
-    class CreateMenuTabEvent final : public geode::Event {
+    class CreateMenuTabEvent final : public Event<CreateMenuTabEvent> {
     public:
         explicit CreateMenuTabEvent(std::string name) : m_name(std::move(name)) {}
         const std::string& getName() const { return m_name; }
@@ -70,7 +70,7 @@ namespace eclipse::events {
     };
 
     template <typename... Callback>
-    class AddComponentEvent : public geode::Event {
+    class AddComponentEvent : public Event<AddComponentEvent<T>> {
     public:
         AddComponentEvent(const MenuTab* tab, std::string id, std::string title, Callback... callbacks)
             : m_tabName(tab->getName()), m_id(std::move(id)), m_title(std::move(title)), m_callbacks(std::move(callbacks)...) {}
@@ -95,7 +95,7 @@ namespace eclipse::events {
     using AddToggleEvent = AddComponentEvent<std::function<void(bool)>>;
     using AddButtonEvent = AddComponentEvent<std::function<void()>>;
 
-    class SetComponentDescriptionEvent : public geode::Event {
+    class SetComponentDescriptionEvent : public Event<SetComponentDescriptionEvent> {
     public:
         SetComponentDescriptionEvent(size_t id, std::string description)
             : m_id(id), m_description(std::move(description)) {}
