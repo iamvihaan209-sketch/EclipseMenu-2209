@@ -21,7 +21,12 @@ namespace eclipse::hacks::Bypass {
 
     REGISTER_HACK(AllowLowVolume)
 
-#define GET_SLIDER(sender) geode::cast::typeinfo_cast<SliderThumb*>(sender); if (!slider) return
+#if defined(GEODE_IS_ARM_MAC)
+    // typeinfo for SliderThumb is not bound on arm64 macOS, so skip the checked cast there.
+    #define GET_SLIDER(sender) static_cast<SliderThumb*>(sender); if (!slider) return
+#else
+    #define GET_SLIDER(sender) geode::cast::typeinfo_cast<SliderThumb*>(sender); if (!slider) return
+#endif
 
     class $modify(AllowLowVolumeOLHook, OptionsLayer) {
         ALL_DELEGATES_AND_SAFE_PRIO("bypass.allowlowvolume")

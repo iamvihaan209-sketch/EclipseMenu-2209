@@ -35,6 +35,8 @@ namespace eclipse::hacks::Creator {
         }
     };
 
+#ifdef GEODE_IS_WINDOWS
+    // GameLevelManager::setIntForKey is only bound on Windows; the song-filter hook is disabled elsewhere.
     class $modify(DefaultSongBypassMSLHook, MoreSearchLayer) {
         ALL_DELEGATES_AND_SAFE_PRIO("creator.defaultsongbypass")
 
@@ -54,5 +56,6 @@ namespace eclipse::hacks::Creator {
             this->updateAudioLabel();
         }
     };
+#endif
 
 }

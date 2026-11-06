@@ -25,6 +25,7 @@ namespace eclipse::hacks::Bypass {
         ADD_HOOKS_DELEGATE("bypass.charfilter")
 
         void updateLabel(std::string str) {
+#ifdef GEODE_IS_WINDOWS
             this->setAllowedChars(
                 "abcdefghijklmnopqrstuvwxyz"
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -32,6 +33,7 @@ namespace eclipse::hacks::Bypass {
                 "`~[]{}/?.>,<\\|;:'\""
                 " "
             );
+#endif
  
             CCTextInputNode::updateLabel(std::move(str));
         }

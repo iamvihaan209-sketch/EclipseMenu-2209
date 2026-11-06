@@ -69,7 +69,7 @@ namespace eclipse::hacks::Global {
 
             FLAlertLayer::create(nullptr,
                 "Cheats Detected", message, "OK",
-                nullptr, 400, true, 0, 1
+                nullptr, 400
             )->show();
         }
 

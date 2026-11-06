@@ -61,7 +61,9 @@ namespace eclipse::hacks::Creator {
                 float value = m_sliderXY->getThumb()->getValue();
 
                 updateLabelXY(value);
+#ifdef GEODE_IS_WINDOWS
                 this->sliderChanged(m_sliderXY->getThumb());
+#endif
 
                 if (EditorUI::get()) EditorUI::get()->scaleXYChanged(value, value, m_scaleLocked);
             }
