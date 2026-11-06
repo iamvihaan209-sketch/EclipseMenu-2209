@@ -55,7 +55,12 @@ namespace eclipse::bot {
         m_replay.author = GJAccountManager::sharedState()->m_username;
         m_replay.duration = m_replay.inputs.size() > 0 ? m_replay.inputs[m_replay.inputs.size() - 1].frame / m_replay.framerate : 0;
 
-        geode::ByteVector data = m_replay.exportData();
+        auto exported = m_replay.exportData();
+        if (exported.isErr()) {
+            geode::log::error("Failed to export replay: {}", exported.unwrapErr());
+            return;
+        }
+        geode::ByteVector data = exported.unwrap();
         std::ofstream file(path, std::ios::binary);
         file.write(reinterpret_cast<const char*>(data.data()), data.size());
         file.close();
@@ -77,7 +82,9 @@ namespace eclipse::bot {
         f.read(reinterpret_cast<char*>(data.data()), fileSize);
         f.close();
 
-        m_replay = BotReplay::importData(data);
+        auto imported = BotReplay::importData(data);
+        if (imported.isErr()) return Err(imported.unwrapErr());
+        m_replay = imported.unwrap();
 
         return Ok();
     }

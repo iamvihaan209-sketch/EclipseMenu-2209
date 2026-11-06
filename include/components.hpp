@@ -70,7 +70,7 @@ namespace eclipse::events {
     };
 
     template <typename... Callback>
-    class AddComponentEvent : public Event<AddComponentEvent<T>> {
+    class AddComponentEvent : public Event<AddComponentEvent<Callback...>> {
     public:
         AddComponentEvent(const MenuTab* tab, std::string id, std::string title, Callback... callbacks)
             : m_tabName(tab->getName()), m_id(std::move(id)), m_title(std::move(title)), m_callbacks(std::move(callbacks)...) {}

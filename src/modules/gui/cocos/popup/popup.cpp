@@ -9,7 +9,7 @@
 
 namespace eclipse::gui::cocos {
 
-    bool Popup::setup(Tabs const& tabs) {
+    void Popup::setupContent(Tabs const& tabs) {
         const auto tm = ThemeManager::get();
         auto winSize = cocos2d::CCDirector::get()->getWinSize();
         this->setTitle("");
@@ -56,14 +56,13 @@ namespace eclipse::gui::cocos {
         m_contentMenu->setAnchorPoint({ 0, 1 });
         m_contentMenu->setPosition(125.f, 270.f);
         m_mainLayer->addChild(m_contentMenu, 1);
-
-        return true;
     }
 
     Popup* Popup::create(Tabs const& tabs) {
         auto ret = new Popup;
-        if (ret->initAnchored(480.f, 280.f, std::move(tabs))) {
+        if (ret->init(480.f, 280.f)) {
             ret->autorelease();
+            ret->setupContent(tabs);
             return ret;
         }
         delete ret;
@@ -87,7 +86,7 @@ namespace eclipse::gui::cocos {
     }
 
     void Popup::onExit() {
-        geode::Popup<Tabs const&>::onExit();
+        geode::Popup::onExit();
         CocosRenderer::get()->shutdown(true);
     }
 

@@ -44,10 +44,10 @@ $execute {
     events::AddToggleEvent::listeners().push_back([](events::AddToggleEvent& e) {
         auto tab = gui::MenuTab::find(e.getTabName());
         auto toggle = tab->addToggle(e.getTitle(), e.getID());
-        toggle.callback([callback = std::get<0>(e.getCallbacks())](bool value) {
+        toggle->callback([callback = std::get<0>(e.getCallbacks())](bool value) {
             std::invoke(callback, value);
         })->handleKeybinds()->disableSaving();
-        e.setUniqueID(toggle.getUID());
+        e.setUniqueID(toggle->getUID());
         return;
     });
     events::AddButtonEvent::listeners().push_back([](events::AddButtonEvent& e) {

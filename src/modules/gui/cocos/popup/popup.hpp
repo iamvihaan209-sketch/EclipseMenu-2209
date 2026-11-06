@@ -6,9 +6,9 @@
 
 namespace eclipse::gui::cocos {
 
-    class Popup : public geode::Popup<Tabs const&> {
+    class Popup : public geode::Popup {
     protected:
-        bool setup(Tabs const& tabs) override;
+        void setupContent(Tabs const& tabs);
         void onExit() override;
 
     public:

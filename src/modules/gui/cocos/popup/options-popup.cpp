@@ -7,7 +7,7 @@
 #include "content-view.hpp"
 
 namespace eclipse::gui::cocos {
-    bool OptionsPopup::setup(std::shared_ptr<MenuTab> const& tab) {
+    void OptionsPopup::setupContent(std::shared_ptr<MenuTab> const& tab) {
         const auto tm = ThemeManager::get();
         this->setTitle(tab->getTitle());
         m_title->setPositionY(225.f);
@@ -44,19 +44,18 @@ namespace eclipse::gui::cocos {
 
         // Register the popup with the engine for cleanup
         CocosRenderer::get()->registerOptionsPopup(this);
-
-        return true;
     }
 
     void OptionsPopup::onExit() {
-        Popup::onExit();
+        geode::Popup::onExit();
         CocosRenderer::get()->unregisterOptionsPopup(this);
     }
 
     OptionsPopup* OptionsPopup::create(std::shared_ptr<MenuTab> const& tab) {
         auto ret = new OptionsPopup;
-        if (ret->initAnchored(400.f, 240.f, std::move(tab))) {
+        if (ret->init(400.f, 240.f)) {
             ret->autorelease();
+            ret->setupContent(tab);
             return ret;
         }
         delete ret;
