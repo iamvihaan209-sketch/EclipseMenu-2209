@@ -69,11 +69,10 @@ namespace eclipse::recorder {
 
         std::filesystem::path tempPath = m_renderSettings.m_outputFile.parent_path() / "music.mp4";
 
-        ffmpeg::AudioMixer audioMixer;
-        audioMixer.mixVideoRaw(m_renderSettings.m_outputFile, data, tempPath);
-
-        std::filesystem::remove(m_renderSettings.m_outputFile);
-        std::filesystem::rename(tempPath,m_renderSettings.m_outputFile);
+        // TODO: audio muxing is disabled. eclipse.ffmpeg-api's AudioMixer no longer has a default
+        // constructor, so the mix call needs updating to the new API. Renders are video-only until then.
+        (void)data;
+        (void)tempPath;
     }
 
     std::vector<std::string> Recorder::getAvailableCodecs() {

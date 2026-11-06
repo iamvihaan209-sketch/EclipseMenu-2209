@@ -210,13 +210,13 @@ namespace eclipse::keybinds {
             FIRST_PRIORITY("cocos2d::CCKeyboardDispatcher::dispatchKeyboardMSG");
         }
 
-        bool dispatchKeyboardMSG(cocos2d::enumKeyCodes key, bool down, bool idk) {
+        bool dispatchKeyboardMSG(cocos2d::enumKeyCodes key, bool down, bool repeat, double timestamp) {
             if (down)
                 Manager::get()->registerKeyPress(convertCocosKey(key));
-            else if (!down)
+            else
                 Manager::get()->registerKeyRelease(convertCocosKey(key));
 
-            return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
+            return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, repeat, timestamp);
         }
     };
 

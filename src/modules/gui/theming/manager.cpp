@@ -278,8 +278,8 @@ namespace eclipse::gui {
             }
         };
 
-        globThemes(geode::Mod::get()->getResourcesDir());
-        globThemes(geode::Mod::get()->getConfigDir() / "themes");
+        globThemes(geode::Mod::get()->getResourcesDir().toStdPath().unwrap());
+        globThemes(geode::Mod::get()->getConfigDir().toStdPath().unwrap() / "themes");
 
         return themes;
     }

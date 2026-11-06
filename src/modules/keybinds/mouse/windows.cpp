@@ -2,8 +2,6 @@
 #ifdef GEODE_IS_WINDOWS
 #include <modules/keybinds/manager.hpp>
 
-#include <Geode/modify/CCEGLView.hpp>
-
 namespace eclipse::keybinds {
 
     Keys convertMouseKey(int button) {
@@ -23,19 +21,7 @@ namespace eclipse::keybinds {
         }
     }
 
-    class $modify(MouseKeybindingsManagerCCEGLVHook, cocos2d::CCEGLView) {
-        void onGLFWMouseCallBack(GLFWwindow* window, int button, int action, int mods) {
-            CCEGLView::onGLFWMouseCallBack(window, button, action, mods);
-
-            auto manager = Manager::get();
-            auto key = convertMouseKey(button);
-
-            if (action == GLFW_PRESS)
-                manager->registerKeyPress(key);
-            else if (action == GLFW_RELEASE)
-                manager->registerKeyRelease(key);
-        }
-    };
+    // Mouse-button hook removed: CCEGLView::onGLFWMouseCallBack is inline on 2.2091 Windows and cannot be modified.
 
 }
 
