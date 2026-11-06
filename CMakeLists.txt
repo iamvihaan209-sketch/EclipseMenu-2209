@@ -58,3 +58,10 @@ target_link_libraries(${PROJECT_NAME} third_party)
 
 # Setup Geode
 setup_geode_mod(${PROJECT_NAME})
+
+# Geode links every "required" dependency's library into macOS binaries, and the ffmpeg-api dylib
+# fails to load there. The dependency is "recommended" in mod.json, so link its import library on Windows only.
+if (WIN32)
+  file(GLOB EFFMPEG_API_LIBS "${CMAKE_BINARY_DIR}/geode-deps/eclipse.ffmpeg-api/*.lib")
+  target_link_libraries(${PROJECT_NAME} ${EFFMPEG_API_LIBS})
+endif()
