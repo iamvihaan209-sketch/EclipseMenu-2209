@@ -4,14 +4,14 @@
 #include <modules/gui/cocos/popup/options-popup.hpp>
 
 namespace eclipse::gui::cocos {
-    class ColorComponentNode : public BaseComponentNode<ColorComponentNode, cocos2d::CCMenu, ColorComponent, float>, public geode::ColorPickPopupDelegate {
+    class ColorComponentNode : public BaseComponentNode<ColorComponentNode, cocos2d::CCMenu, ColorComponent, float> {
     protected:
         ColorChannelSprite* m_colorSprite = nullptr;
         CCMenuItemSpriteExtra* m_colorBtn = nullptr;
         cocos2d::CCLabelBMFont* m_label = nullptr;
         CCMenuItemSpriteExtra* m_infoButton = nullptr;
 
-        void updateColor(cocos2d::ccColor4B const& color) override {
+        void updateColor(cocos2d::ccColor4B const& color) {
             auto colorValue = eclipse::gui::Color::fromCCColor3B(geode::cocos::to3B(color));
             m_colorSprite->setColor(geode::cocos::to3B(color));
             m_component->setValue(colorValue);
@@ -31,7 +31,7 @@ namespace eclipse::gui::cocos {
             m_colorBtn = geode::cocos::CCMenuItemExt::createSpriteExtra(m_colorSprite, [this](auto) {
                 /**/
                 auto popup = geode::ColorPickPopup::create(m_component->getValue().toCCColor3B());
-                popup->setDelegate(this);
+                popup->setCallback([this](cocos2d::ccColor4B const& color) { this->updateColor(color); });
                 popup->show();
             });
 

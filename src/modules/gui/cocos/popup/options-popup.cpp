@@ -20,7 +20,7 @@ namespace eclipse::gui::cocos {
         m_mainLayer->addChildAtPosition(bgBehind, geode::Anchor::Center);
 
         // Background for the entire popup
-        m_bgSprite = cocos2d::extension::CCScale9Sprite::create("square02b_001.png");
+        m_bgSprite = geode::NineSlice::create("square02b_001.png");
         m_bgSprite->setContentSize(m_mainLayer->getContentSize() - 3);
         m_bgSprite->setColor(tm->getTitleBackgroundColor().toCCColor3B());
         m_bgSprite->setID("main-bg"_spr);
