@@ -8,6 +8,7 @@ namespace eclipse::hacks::Shortcuts {
 
     class Shortcuts : public hack::Hack {
         static void openSettings() {
+#ifndef GEODE_IS_INTEL_MAC // OptionsLayer::create is not bound on Intel macOS
             if (auto* options = OptionsLayer::create()) {
                 auto scene = cocos2d::CCScene::get();
                 if (!scene) return;
@@ -15,6 +16,7 @@ namespace eclipse::hacks::Shortcuts {
                 scene->addChild(options, zOrder + 1);
                 options->showLayer(false);
             }
+#endif
         }
 
         static void uncompleteLevel() {

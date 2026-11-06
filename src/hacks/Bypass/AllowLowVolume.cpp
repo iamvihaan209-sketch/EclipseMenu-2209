@@ -21,8 +21,8 @@ namespace eclipse::hacks::Bypass {
 
     REGISTER_HACK(AllowLowVolume)
 
-#if defined(GEODE_IS_ARM_MAC)
-    // typeinfo for SliderThumb is not bound on arm64 macOS, so skip the checked cast there.
+#if defined(GEODE_IS_MACOS)
+    // typeinfo for SliderThumb is not bound on macOS, so skip the checked cast there.
     #define GET_SLIDER(sender) static_cast<SliderThumb*>(sender); if (!slider) return
 #else
     #define GET_SLIDER(sender) geode::cast::typeinfo_cast<SliderThumb*>(sender); if (!slider) return
