@@ -1,7 +1,15 @@
 # Eclipse Menu
 
 ## Unreleased
-Work in progress: porting to Geode `6.0.0-alpha.1` and Geometry Dash `2.2091`. Not yet verified by a build.
+Work in progress: porting to Geode `6.0.0-alpha.1` and Geometry Dash `2.2091`. Builds pass on Windows and macOS (Intel); not yet tested in-game.
+
+**Removed:** ImGui menu and layouts (including MegaHack), blur, Labels, Discord RPC, NoTrail, Always Show Coins, font/layout/style settings.
+
+**Known gaps:**
+* Audio is not muxed into recordings yet (`eclipse.ffmpeg-api` changed its `AudioMixer` API).
+* Internal Recorder is disabled on macOS.
+* Mouse-button keybinds are unavailable on Windows (no bindable hook in 2.2091).
+* Some Windows-only bypasses are disabled on macOS.
 
 ## v1.0.0-beta.4
 **<cg>Geometry Dash v2.2074</c> support**  
