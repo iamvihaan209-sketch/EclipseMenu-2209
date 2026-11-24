@@ -1,7 +1,7 @@
 # Eclipse Menu
 
 ## Unreleased
-Work in progress: porting to Geode `6.0.0-alpha.1` and Geometry Dash `2.2091`. Builds pass on Windows and macOS (Intel); not yet tested in-game.
+Work in progress: porting to Geode `6.0.0-beta.3` and Geometry Dash `2.2091`. Builds pass on Windows and macOS (Intel); not yet tested in-game.
 
 **Removed:** ImGui menu and layouts (including MegaHack), blur, Labels, Discord RPC, NoTrail, Always Show Coins, font/layout/style settings.
 
