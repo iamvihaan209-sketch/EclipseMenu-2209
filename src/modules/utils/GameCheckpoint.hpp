@@ -183,9 +183,6 @@ namespace eclipse::utils {
             m_unk838 = player->m_unk838;
             m_stateOnGround = player->m_stateOnGround;
             m_stateUnk = player->m_stateUnk;
-            m_stateNoStickX = player->m_stateNoStickX;
-            m_stateNoStickY = player->m_stateNoStickY;
-            m_stateUnk2 = player->m_stateUnk2;
             m_stateBoostX = player->m_stateBoostX;
             m_stateBoostY = player->m_stateBoostY;
             m_maybeStateForce2 = player->m_maybeStateForce2;
@@ -416,9 +413,6 @@ namespace eclipse::utils {
             player->m_unk838 = m_unk838;
             player->m_stateOnGround = m_stateOnGround;
             player->m_stateUnk = m_stateUnk;
-            player->m_stateNoStickX = m_stateNoStickX;
-            player->m_stateNoStickY = m_stateNoStickY;
-            player->m_stateUnk2 = m_stateUnk2;
             player->m_stateBoostX = m_stateBoostX;
             player->m_stateBoostY = m_stateBoostY;
             player->m_maybeStateForce2 = m_maybeStateForce2;
@@ -654,9 +648,6 @@ namespace eclipse::utils {
         float m_unk838;
         int m_stateOnGround;
         unsigned char m_stateUnk;
-        unsigned char m_stateNoStickX;
-        unsigned char m_stateNoStickY;
-        unsigned char m_stateUnk2;
         int m_stateBoostX;
         int m_stateBoostY;
         int m_maybeStateForce2;
